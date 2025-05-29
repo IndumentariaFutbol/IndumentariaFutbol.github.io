@@ -588,7 +588,7 @@
 
   <div style="margin-top: 30px; text-align: center;">
     <div class="button-group">
-        <button id="btnDonarCafecito" onclick="donarCafecito()">Donar un Cafecito (CVU)</button>
+        <button id="btnDonarCafecito" onclick="donarCafecito()">Donar un Cafecito</button>
     </div>
   </div>
 
@@ -628,6 +628,7 @@
     const miCVU = "0000003100002113037276"; // ¡CAMBIA ESTO POR TU CVU REAL!
     const instagramTiendaUsername = '@recargas_ff_express'; // Tu usuario de Instagram REAL. ¡Cámbialo si es diferente!
     const nombreTienda = 'Indumentaria Fútbol'; // Nombre de tu tienda. ¡Cámbialo si es diferente!
+    const cafecitoAppURL = 'https://cafecito.app/indumentariafutbol'; // ¡TU ENLACE DE CAFECITO.APP!
 
     // Lista de palabras ofensivas o no deseadas (MÁS ROBUSTA Y CON VARIACIONES)
     const palabrasProhibidas = [
@@ -997,18 +998,18 @@
     }
 
     function donarCafecito() {
+        // Copiar el CVU (opcional, si quieres mantener esa opción)
         navigator.clipboard.writeText(miCVU).then(() => {
-            showToast('¡Gracias por tu Cafecito! 🙏 CVU copiado al portapapeles. Puedes apoyarme escaneando el código QR en el perfil de Instagram de la tienda.', 'success', 7000);
-
-            // Opcional: Abrir Instagram en una nueva pestaña para que vean tu perfil
-            const instagramProfileURL = `https://www.instagram.com/${instagramTiendaUsername.replace('@', '')}/`;
-            setTimeout(() => {
-                window.open(instagramProfileURL, '_blank');
-            }, 3000); // Dale tiempo al usuario para leer el toast
+            showToast('¡Gracias por tu Cafecito! 🙏 CVU copiado. Serás redirigido para donar fácilmente.', 'success', 5000);
         }).catch(err => {
-            showToast('No se pudo copiar el CVU. Por favor, contáctanos por Instagram para donar.', 'error', 7000);
+            showToast('No se pudo copiar el CVU. Serás redirigido para donar fácilmente.', 'info', 5000);
             console.error('Error al copiar CVU:', err);
         });
+
+        // Abrir la página de Cafecito.app en una nueva pestaña
+        setTimeout(() => {
+            window.open(cafecitoAppURL, '_blank');
+        }, 1500); // Dar un pequeño tiempo para que el toast se vea
     }
 
     // Inicializar el carrito y cerrar todas las categorías al cargar la página
