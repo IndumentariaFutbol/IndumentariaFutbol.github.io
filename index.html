@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda de Fútbol</title>
+  <title>Indumentaria Fútbol</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Reset básicos */
@@ -49,8 +49,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      /* Ejemplo de imagen de fondo: una textura de campo de fútbol o un patrón abstracto */
-      /* Puedes cambiar esta URL por una que te guste más, por ejemplo, una sutil de campo o un patrón geométrico */
       background-image: url('https://user-images.githubusercontent.com/97834575/157488099-a8c6a0c5-5a5c-4a3e-be98-a3d8b5a0b7e4.jpg'); /* Textura de campo de fútbol */
       background-size: cover;
       background-position: center;
@@ -293,7 +291,8 @@
         color: var(--text-color);
     }
 
-    input[type="text"] {
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
@@ -304,13 +303,14 @@
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    input[type="text"]:focus {
+    input[type="text"]:focus,
+    input[type="password"]:focus {
         border-color: var(--secondary-color);
         box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2); /* Sombra de enfoque azul */
         outline: none;
     }
 
-    /* Botones generales de la tienda (Aplicar descuento, Finalizar compra, Copiar CVU) */
+    /* Botones generales de la tienda (Aplicar descuento, Finalizar compra, Copiar CVU, Registrarse) */
     .button-group button { /* Usar una clase para agrupar */
       background-color: var(--primary-color); /* Azul oscuro para los botones principales */
       color: white;
@@ -331,6 +331,16 @@
     .button-group button:last-child {
         margin-right: 0;
     }
+    .button-group button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+    .button-group button:disabled:hover {
+        background-color: #cccccc; /* No cambia al pasar el ratón */
+    }
+
 
     .button-group button:hover {
       background-color: #003b8e; /* Un azul más oscuro */
@@ -358,6 +368,28 @@
         margin-top: 25px;
     }
 
+    /* Estilos para el formulario de registro simulado */
+    #registroSimulado {
+        background-color: #f0f8ff; /* Fondo más claro para distinguirlo */
+        border: 2px dashed var(--secondary-color);
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    #registroSimulado h3 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        font-size: 1.5em;
+    }
+    #registroSimulado button {
+        background-color: #28a745; /* Botón de registro verde */
+    }
+    #registroSimulado button:hover {
+        background-color: #218838;
+    }
+
     /* Media Queries para una mejor adaptación */
     @media (max-width: 768px) {
       body { padding: 15px; }
@@ -371,12 +403,13 @@
       .producto button { padding: 8px 16px; font-size: 0.95em; border-radius: 20px; }
       #toast-container { right: 10px; left: 10px; align-items: center; }
       .toast { max-width: 100%; font-size: 0.9em; padding: 12px 25px; border-radius: 8px; }
-      input[type="text"], .button-group button { padding: 10px 18px; font-size: 0.95em; border-radius: 20px; }
+      input[type="text"], input[type="password"], .button-group button { padding: 10px 18px; font-size: 0.95em; border-radius: 20px; }
       #listaCarrito li { font-size: 0.95em; padding: 10px 15px; border-radius: 6px; }
       #listaCarrito button { padding: 5px 9px; border-radius: 4px; }
       #total, #totalDescuento, #totalPagado { font-size: 1.3em; }
       #totalDescuento { font-size: 1.4em; }
       #totalPagado { font-size: 1.8em; }
+      #registroSimulado h3 { font-size: 1.3em; }
     }
 
     @media (max-width: 480px) {
@@ -389,7 +422,7 @@
       .producto img { width: 120px; margin-bottom: 8px; }
       .producto-info span { font-size: 1em; }
       .producto button { padding: 8px 14px; font-size: 0.9em; border-radius: 18px; }
-      input[type="text"], .button-group button { padding: 8px 15px; font-size: 0.9em; border-radius: 18px; display: block; margin-left: 0; margin-right: 0; width: 100%; } /* Botones y inputs ocupan todo el ancho */
+      input[type="text"], input[type="password"], .button-group button { padding: 8px 15px; font-size: 0.9em; border-radius: 18px; display: block; margin-left: 0; margin-right: 0; width: 100%; } /* Botones y inputs ocupan todo el ancho */
       .button-group button + button { margin-top: 10px; } /* Espacio entre botones apilados */
       #listaCarrito li { font-size: 0.9em; padding: 8px 12px; border-radius: 5px; flex-direction: column; align-items: flex-start; } /* Apila ítems en carrito */
       #listaCarrito li .item-details { width: 100%; margin-bottom: 5px; }
@@ -397,11 +430,12 @@
       #total, #totalDescuento, #totalPagado { font-size: 1.2em; }
       #totalDescuento { font-size: 1.3em; }
       #totalPagado { font-size: 1.6em; }
+      #registroSimulado h3 { font-size: 1.2em; }
     }
   </style>
 </head>
 <body>
-  <h1>Tienda de Fútbol</h1>
+  <h1>Indumentaria Fútbol</h1>
 
   <div class="categoria" id="categoria-botines">
     <h2 onclick="toggleCategoria('categoria-botines')">Botines</h2>
@@ -498,8 +532,25 @@
 
     <p><strong>Total con descuento:</strong> $<span id="totalDescuento">0.00</span></p>
 
+    <div id="registroSimulado">
+        <h3>Regístrate para continuar con tu compra</h3>
+        <label for="regNombre">Tu Nombre:</label>
+        <input type="text" id="regNombre" placeholder="Ej: Juan Pérez">
+        <label for="regPassword">Crea una contraseña:</label>
+        <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
+        <div class="button-group">
+            <button onclick="simularRegistro()">Registrarme</button>
+        </div>
+    </div>
+
+    <div id="seccionInstagram" style="display:none;">
+        <label for="instagramCliente">Tu Usuario de Instagram (Ej: @tu_usuario):</label>
+        <input type="text" id="instagramCliente" placeholder="Ej: @juan_perez_futbol">
+    </div>
+
+
     <div class="button-group">
-        <button onclick="finalizarCompra()">Finalizar compra</button>
+        <button id="btnFinalizarCompra" onclick="finalizarCompra()" disabled>Finalizar compra</button>
     </div>
   </div>
 
@@ -514,7 +565,7 @@
   <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
     <input type="hidden" name="id_pedido" id="inputIdPedido"> <input type="hidden" name="resumen_pedido" id="inputResumen">
     <input type="hidden" name="total_final_pedido" id="inputTotal">
-    </form>
+    <input type="hidden" name="nombre_cliente" id="inputNombreCliente"> <input type="hidden" name="instagram_cliente" id="inputInstagramCliente"> </form>
 
   <div id="toast-container"></div>
 
@@ -530,6 +581,7 @@
     let totalFinal = 0; // Total con descuentos aplicados
     let descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Para rastrear el descuento activo
     let openCategoryId = null; // Para controlar qué categoría está abierta
+    let nombreClienteRegistrado = ''; // Almacena el nombre una vez "registrado"
 
     // Estructura de productos para una mejor gestión y futuras expansiones
     const productosDisponibles = {
@@ -557,6 +609,11 @@
     };
 
     const miCVU = "0000003100002113037276"; // ¡CAMBIA ESTO POR TU CVU REAL!
+    const instagramTiendaUsername = '@recargas_ff_express'; // Tu usuario de Instagram REAL. ¡Cámbialo si es diferente!
+    const nombreTienda = 'Indumentaria Fútbol'; // Nombre de tu tienda. ¡Cámbialo si es diferente!
+
+    // Lista de palabras ofensivas o no deseadas (puedes expandirla)
+    const palabrasProhibidas = ['puto', 'puta', 'mierda', 'gil', 'boludo', 'tarado', 'idiota', 'estupido', 'caca', 'pene', 'vagina', 'concha', 'trolo', 'maricon', 'zorra', 'mufa', 'bosta']; // Agrega más si lo consideras necesario
 
     // --- Funciones de Utilidad ---
 
@@ -645,6 +702,14 @@
 
         document.getElementById('total').textContent = totalBruto.toLocaleString('es-AR');
         aplicarDescuento(true); // Recalcular totalFinal al actualizar el carrito
+
+        // Habilitar o deshabilitar finalizar compra si el carrito está vacío y no hay registro
+        const btnFinalizar = document.getElementById('btnFinalizarCompra');
+        if (carrito.length === 0 || !nombreClienteRegistrado) {
+            btnFinalizar.disabled = true;
+        } else {
+            btnFinalizar.disabled = false;
+        }
     }
 
     function aplicarDescuento(recalcular = false) {
@@ -703,11 +768,91 @@
         return `PEDIDO-${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
     }
 
+    // Función de validación de palabras ofensivas
+    function contienePalabrasProhibidas(texto) {
+        const textoLowerCase = texto.toLowerCase();
+        for (const palabra of palabrasProhibidas) {
+            // Usar regex para buscar la palabra completa y no partes de otras palabras
+            const regex = new RegExp(`\\b${palabra}\\b`, 'i');
+            if (regex.test(textoLowerCase)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function simularRegistro() {
+        const regNombreInput = document.getElementById('regNombre');
+        const regPasswordInput = document.getElementById('regPassword');
+        const btnFinalizar = document.getElementById('btnFinalizarCompra');
+        const seccionInstagram = document.getElementById('seccionInstagram');
+        const registroSimuladoDiv = document.getElementById('registroSimulado');
+
+        const nombre = regNombreInput.value.trim();
+        const password = regPasswordInput.value.trim();
+
+        if (nombre === '') {
+            showToast('Por favor, ingresa tu nombre para registrarte.', 'error');
+            regNombreInput.focus();
+            return;
+        }
+        if (contienePalabrasProhibidas(nombre)) {
+            showToast('El nombre ingresado contiene palabras no permitidas. Por favor, sé respetuoso.', 'error');
+            regNombreInput.focus();
+            return;
+        }
+        if (password.length < 6) {
+            showToast('La contraseña debe tener al menos 6 caracteres.', 'error');
+            regPasswordInput.focus();
+            return;
+        }
+
+        // Si todo es válido, "registramos"
+        nombreClienteRegistrado = nombre; // Guardamos el nombre para usarlo más tarde
+        showToast(`¡Hola ${nombreClienteRegistrado}! Te has "registrado" exitosamente. Ahora puedes finalizar tu compra.`, 'success', 5000);
+
+        // Ocultar el formulario de registro y mostrar el campo de Instagram
+        registroSimuladoDiv.style.display = 'none';
+        seccionInstagram.style.display = 'block';
+
+        // Habilitar el botón de finalizar compra
+        btnFinalizar.disabled = false;
+    }
+
+
     function finalizarCompra() {
         if (carrito.length === 0) {
             showToast('El carrito está vacío. Agrega productos para finalizar la compra.', 'error');
             return;
         }
+
+        if (!nombreClienteRegistrado) {
+            showToast('Debes "registrarte" antes de finalizar la compra.', 'error');
+            // Opcional: mostrar de nuevo la sección de registro
+            document.getElementById('registroSimulado').style.display = 'block';
+            document.getElementById('seccionInstagram').style.display = 'none';
+            return;
+        }
+
+        const instagramClienteInput = document.getElementById('instagramCliente');
+        let instagramCliente = instagramClienteInput.value.trim();
+
+        // Validaciones para Instagram
+        if (instagramCliente === '') {
+            showToast('Por favor, ingresa tu usuario de Instagram.', 'error');
+            instagramClienteInput.focus();
+            return;
+        }
+         if (contienePalabrasProhibidas(instagramCliente)) {
+            showToast('El usuario de Instagram ingresado contiene palabras no permitidas. Por favor, sé respetuoso.', 'error');
+            instagramClienteInput.focus();
+            return;
+        }
+        // Asegurarse de que el usuario de Instagram comience con '@'
+        if (!instagramCliente.startsWith('@')) {
+            instagramCliente = '@' + instagramCliente;
+        }
+
 
         const idPedido = generarIdPedido();
 
@@ -726,29 +871,31 @@
         document.getElementById('totalPagado').textContent = totalFinal.toLocaleString('es-AR');
         document.getElementById('idPedidoComprobante').textContent = idPedido;
 
-        // 1. Preparar mensaje para Instagram DM y Copiado
-        let instagramMessage = `¡Hola! He realizado una compra en tu tienda de Indumentaria de Fútbol.\n\n`;
-        instagramMessage += `ID del Pedido: ${idPedido}\n\n`;
-        instagramMessage += resumenTexto;
-        instagramMessage += `\nTotal a pagar: $${totalFinal.toLocaleString('es-AR')}\n`;
-        instagramMessage += `\nMi nombre es [Tu Nombre] y mi Instagram es @[Tu Instagram] para coordinar el pago y envío.`;
-        instagramMessage += `\n\nEsperamos tu mensaje para avanzar con el pedido.`;
+        // 1. Preparar el nuevo mensaje para Instagram DM y Copiado
+        let instagramMessage = `¡Hola ${nombreClienteRegistrado}! 😊 ¡Gracias por tu compra en ${nombreTienda}!\n\n`;
+        instagramMessage += `Tu pedido con ID #${idPedido} ya fue registrado.\n\n`;
+        instagramMessage += `Aquí el resumen:\n${resumenTexto}\n`;
+        instagramMessage += `Total Final: $${totalFinal.toLocaleString('es-AR')}\n\n`;
+        instagramMessage += `Nos contactaremos contigo por Instagram DM desde ${instagramTiendaUsername} en breve a tu usuario ${instagramCliente} para coordinar el pago y el envío. ¡Estate atento/a!\n\n`;
+        instagramMessage += `¡Saludos!`;
 
-        const instagramUsername = 'recargas_ff_express'; // Tu usuario de Instagram
-        const instagramURL = `https://ig.me/m/${instagramUsername}`;
+
+        const instagramURL = `https://ig.me/m/${instagramTiendaUsername.replace('@', '')}`; // Asegurarse de quitar el @ para la URL
 
         // 2. Enviar a Formspree (comprobante por Gmail)
         const formularioCompra = document.getElementById('formularioCompra');
         document.getElementById('inputIdPedido').value = idPedido;
-        document.getElementById('inputResumen').value = `Pedido en IndumentariaFutbol.github.io:\n\nID del Pedido: ${idPedido}\n\n${resumenTexto}\nTotal final: $${totalFinal.toLocaleString('es-AR')}`;
+        document.getElementById('inputResumen').value = `Pedido de ${nombreTienda}:\n\nID del Pedido: ${idPedido}\n\n${resumenTexto}\nTotal final: $${totalFinal.toLocaleString('es-AR')}\n\nNombre Cliente: ${nombreClienteRegistrado}\nInstagram Cliente: ${instagramCliente}`;
         document.getElementById('inputTotal').value = totalFinal.toLocaleString('es-AR');
+        document.getElementById('inputNombreCliente').value = nombreClienteRegistrado; // Asignar al campo oculto
+        document.getElementById('inputInstagramCliente').value = instagramCliente; // Asignar al campo oculto
 
         // Copiar el mensaje a Instagram automáticamente (antes de la redirección de Formspree)
         navigator.clipboard.writeText(instagramMessage).then(() => {
-            showToast('¡Mensaje del pedido copiado! Pégalo en Instagram ✅ Redirigiendo...', 'success', 5000);
+            showToast('¡Mensaje del pedido copiado! Pégalo en Instagram si lo deseas. Nos contactaremos pronto. ✅', 'success', 5000);
         }).catch(err => {
             console.error('Error al copiar el mensaje a Instagram:', err);
-            showToast('No se pudo copiar el mensaje automáticamente. Abre Instagram y coordina manualmente.', 'error', 7000);
+            showToast('No se pudo copiar el mensaje automáticamente. Por favor, revisa tus DMs de Instagram, te contactaremos allí.', 'error', 7000);
         });
 
         // Redirigir a Instagram en una nueva pestaña (para que el usuario lo tenga listo)
@@ -763,7 +910,18 @@
         carrito = [];
         descuentoAplicado = { tipo: null, valor: 0, codigo: null };
         document.getElementById('codigo').value = '';
-        actualizarCarrito();
+        document.getElementById('instagramCliente').value = ''; // Limpiar campo de Instagram
+
+        // Restablecer el estado del registro para una nueva compra
+        nombreClienteRegistrado = '';
+        document.getElementById('regNombre').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('registroSimulado').style.display = 'block'; // Volver a mostrar el registro
+        document.getElementById('seccionInstagram').style.display = 'none'; // Ocultar Instagram de nuevo
+        document.getElementById('btnFinalizarCompra').disabled = true; // Deshabilitar finalizar compra
+
+        actualizarCarrito(); // Esto también deshabilitará el botón si el carrito queda vacío
+        // (ya lo está haciendo la línea anterior, pero por si acaso)
 
         // Finalmente, envía el formulario a Formspree, lo que causará la redirección de la PÁGINA ACTUAL
         formularioCompra.submit();
@@ -784,6 +942,11 @@
         categorias.forEach(cat => {
             cat.classList.remove('open');
         });
+
+        // Deshabilitar el botón de finalizar compra al inicio
+        document.getElementById('btnFinalizarCompra').disabled = true;
+        // Ocultar la sección de Instagram al inicio
+        document.getElementById('seccionInstagram').style.display = 'none';
     });
   </script>
 </body>
