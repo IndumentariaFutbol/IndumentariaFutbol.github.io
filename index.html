@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Tienda de Fútbol</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda de Fútbol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Reset básicos */
     * {
@@ -12,572 +13,279 @@
       padding: 0;
     }
 
+    :root {
+      /* Colores inspirados en Canva */
+      --primary-color: #0d47a1; /* Azul oscuro */
+      --secondary-color: #1976d2; /* Azul más claro */
+      --accent-color: #ffc107; /* Amarillo para acentos */
+      --light-bg: #e3f2fd; /* Fondo muy claro */
+      --card-bg: #fff; /* Fondo de tarjetas */
+      --text-color: #212121; /* Texto oscuro */
+      --shadow-color: rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #e8f5e9);
-      padding: 20px; /* Padding general */
-      color: #333;
-      min-height: 100vh; /* Para que el fondo ocupe toda la altura */
+      /* Degradado sutil de fondo */
+      background: linear-gradient(to bottom, var(--light-bg), #fff);
+      color: var(--text-color);
+      line-height: 1.6;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Centra el contenido */
+      align-items: center;
+      padding: 20px;
     }
 
     h1 {
       text-align: center;
-      color: #1b5e20;
-      margin-bottom: 40px;
-      font-size: 2.5em; /* Tamaño de fuente relativo */
-      width: 100%; /* Asegura que ocupe todo el ancho disponible */
-      max-width: 900px; /* Limita el ancho máximo */
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-shadow: 1px 1px 2px var(--shadow-color);
     }
 
     .categoria,
     #carrito,
     #comprobante {
-      background: white;
-      border-radius: 12px;
+      background: var(--card-bg);
+      border-radius: 10px;
       padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-      cursor: pointer;
-      width: 100%; /* Ocupa todo el ancho disponible */
-      max-width: 900px; /* Limita el ancho máximo */
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px var(--shadow-color);
+      transition: transform 0.3s ease;
+      width: 100%;
+      max-width: 900px;
     }
 
     .categoria:hover {
-      transform: scale(1.01);
+      transform: translateY(-5px);
     }
 
     .categoria h2 {
-      color: #2e7d32;
-      font-size: 1.5em;
+      color: var(--secondary-color);
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+      font-weight: 600;
     }
 
     .productos {
       display: none;
       margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #ccc;
     }
 
     .producto {
-      background: #f1f8e9;
-      border-radius: 10px;
+      background: #f9f9f9;
+      border-radius: 8px;
       display: flex;
       gap: 15px;
       align-items: center;
       padding: 15px;
       margin-bottom: 15px;
-      transition: background 0.2s;
-      flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
-      justify-content: space-between; /* Espacia los elementos */
-    }
-
-    .producto:hover {
-      background: #dcedc8;
+      box-shadow: 0 2px 4px var(--shadow-color);
     }
 
     .producto img {
       width: 100px;
       height: auto;
-      border-radius: 8px;
-      border: 2px solid #ccc;
-      flex-shrink: 0; /* Evita que la imagen se encoja */
+      border-radius: 5px;
+      border: 2px solid var(--secondary-color);
     }
 
     .producto-info {
-      flex: 1; /* Permite que la info del producto ocupe el espacio restante */
-      min-width: 150px; /* Asegura que la info no se haga demasiado pequeña */
+      flex: 1;
     }
 
     .producto-info span {
       font-weight: 600;
-      display: block; /* Para que el precio y nombre estén en líneas separadas si es necesario */
-      margin-bottom: 5px;
+      color: var(--primary-color);
     }
 
     .producto button {
-      background-color: #2e7d32;
+      background-color: var(--secondary-color);
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 5px;
-      font-weight: bold;
       cursor: pointer;
-      transition: background 0.2s;
-      flex-shrink: 0; /* Evita que el botón se encoja */
+      transition: background-color 0.3s ease;
     }
 
     .producto button:hover {
-      background-color: #1b5e20;
+      background-color: var(--primary-color);
     }
 
     #carrito h2,
     #comprobante h2 {
-      color: #33691e;
+      color: var(--secondary-color);
+      font-size: 1.8em;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+      font-weight: 600;
+    }
+
+    #listaCarrito {
+      list-style: none;
+      padding: 0;
     }
 
     #listaCarrito li {
       margin-bottom: 10px;
-      list-style: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap; /* Permite que el contenido se envuelva en móviles */
-    }
-
-    #listaCarrito li .item-details {
-      flex-grow: 1;
-      min-width: 150px; /* Para que el texto no se comprima demasiado */
-      word-break: break-word; /* Rompe palabras largas si es necesario */
+      background-color: #f0f0f0;
+      padding: 8px;
+      border-radius: 5px;
     }
 
     #listaCarrito button {
       background-color: #e53935;
       color: white;
       border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      margin-left: 10px;
+      padding: 5px 8px;
+      border-radius: 3px;
       cursor: pointer;
-      flex-shrink: 0; /* Evita que el botón se encoja */
     }
 
-    /* Estilos para las notificaciones Toast */
     #toast-container {
       position: fixed;
       top: 20px;
       right: 20px;
       z-index: 1000;
-      display: flex;
-      flex-direction: column-reverse; /* Para que los nuevos toasts aparezcan encima */
-      align-items: flex-end; /* Alinea los toasts a la derecha */
     }
 
     .toast {
       background-color: #333;
       color: white;
-      padding: 10px 20px;
+      padding: 10px 15px;
       border-radius: 5px;
-      margin-top: 10px; /* Espacio entre toasts */
+      margin-top: 5px;
       opacity: 0;
-      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-      transform: translateX(100%); /* Inicialmente fuera de la pantalla */
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      max-width: 90%; /* Limita el ancho del toast en pantallas pequeñas */
-      text-align: center;
+      transition: opacity 0.5s ease-in-out;
     }
 
     .toast.show {
       opacity: 1;
-      transform: translateX(0); /* Entra en la pantalla */
     }
 
-    .toast.success {
-      background-color: #4CAF50; /* Verde */
-    }
-
-    .toast.error {
-      background-color: #f44336; /* Rojo */
-    }
-
-    .toast.info {
-      background-color: #2196F3; /* Azul */
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      font-size: 1em; /* Tamaño de fuente relativo */
     }
 
     button {
-      margin-top: 10px;
-      padding: 10px 16px;
-      font-weight: bold;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background-color: #43a047;
+      background-color: var(--secondary-color);
       color: white;
-      transition: background 0.2s;
-      width: auto; /* Ancho automático para botones */
-      display: inline-block; /* Para que no ocupen todo el ancho si no es necesario */
-      font-size: 1em; /* Tamaño de fuente relativo */
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #2e7d32;
+      background-color: var(--primary-color);
     }
 
     #total,
     #totalDescuento,
     #totalPagado {
-      font-weight: bold;
-      color: #1b5e20;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-top: 10px;
     }
 
     /* Media Queries para una mejor adaptación */
     @media (max-width: 768px) {
-      body {
-        padding: 15px; /* Menos padding en pantallas medianas */
-      }
-      h1 {
-        font-size: 2em; /* Título un poco más pequeño */
-        margin-bottom: 30px;
-      }
-      .categoria,
-      #carrito,
-      #comprobante {
-        padding: 15px; /* Menos padding en contenedores */
-        margin-bottom: 20px;
-      }
-      .categoria h2 {
-        font-size: 1.3em;
-      }
       .producto {
-        flex-direction: column; /* Apila los elementos en productos */
-        align-items: flex-start; /* Alinea al inicio */
-        gap: 10px;
+        flex-direction: column;
+        align-items: flex-start;
       }
+
       .producto img {
         margin-bottom: 10px;
-        width: 80px; /* Imágenes un poco más pequeñas */
-      }
-      .producto-info {
-        width: 100%; /* La info ocupa todo el ancho */
-        margin-bottom: 5px;
-      }
-      .producto button {
-        width: 100%; /* Botón de agregar ocupa todo el ancho */
-        padding: 10px;
-      }
-      #toast-container {
-        right: 10px;
-        left: 10px; /* Centra el toast en móviles */
-        align-items: center;
-      }
-      .toast {
-        max-width: 100%; /* Ocupa todo el ancho en móviles */
-        font-size: 0.9em;
       }
     }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 10px; /* Padding aún más pequeño */
-      }
-      h1 {
-        font-size: 1.8em; /* Título más pequeño */
-        margin-bottom: 25px;
-      }
-      .categoria h2 {
-        font-size: 1.2em;
-      }
-      .categoria,
-      #carrito,
-      #comprobante {
-        padding: 10px;
-        margin-bottom: 15px;
-      }
-      .producto {
-        padding: 10px;
-      }
-      .producto img {
-        width: 70px; /* Imágenes aún más pequeñas */
-      }
-      input[type="text"],
-      button {
-        padding: 8px; /* Padding de botones y inputs más pequeño */
-        font-size: 0.9em;
-      }
-      #listaCarrito li {
-        font-size: 0.9em;
-      }
-      #listaCarrito button {
-        padding: 3px 6px;
-      }
+    /* Estilos adicionales para imágenes de fondo y más */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Imagen de fondo sutil */
+      background-image: url('http://googleusercontent.com/image_generation_content/0'); /* Reemplaza con tu URL */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1; /* Ajusta la opacidad para que sea sutil */
+      z-index: -1;
     }
 
+    .categoria, #carrito, #comprobante {
+        /* Borde sutil y sombra */
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+    }
+
+    /* Estilos para la cuadrícula de productos */
+    .productos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adaptable a diferentes tamaños de pantalla */
+        gap: 20px;
+    }
+
+    .producto {
+        flex-direction: column; /* Apila imagen y texto en pantallas pequeñas */
+        align-items: center; /* Centra los elementos */
+        text-align: center; /* Centra el texto */
+    }
+
+    .producto img {
+        max-width: 100%; /* Asegura que la imagen no se desborde */
+        height: auto;
+        margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+    }
+
+    .producto-info {
+        flex: none; /* Evita que el texto se estire */
+        width: 100%; /* Ocupa todo el ancho disponible */
+    }
+
+    /* Botones más modernos */
+    button {
+        background-color: var(--accent-color); /* Amarillo */
+        color: var(--text-color); /* Texto oscuro */
+        border-radius: 20px; /* Bordes redondeados */
+        padding: 12px 24px;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+        transform: translateY(-3px); /* Ligeramente hacia arriba */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+    }
   </style>
 </head>
 <body>
-  <h1>Tienda de Fútbol</h1>
-
-  <div class="categoria" onclick="toggleMenu('botines')">
-    <h2>Botines</h2>
-    <div class="productos" id="botines">
-      <div class="producto">
-        <img src="https://i0.wp.com/www.sitemarca.com/wp-content/uploads/2019/07/Nike-Mercurial-360-2019-8.jpg" alt="Nike Mercurial">
-        <div class="producto-info">
-          <span>Botines Nike Mercurial - $120</span>
-          <button onclick="agregarAlCarrito('Botines Nike Mercurial', 120, 'nike-mercurial')">Agregar</button>
-        </div>
-      </div>
-      <div class="producto">
-        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/6bf310c6ec0449c2b38c612751070302_9366/Botines_Predator_Elite_Terreno_Firme_Verde_IG8771_HM1.jpg" alt="Adidas Predator">
-        <div class="producto-info">
-          <span>Botines Adidas Predator - $140</span>
-          <button onclick="agregarAlCarrito('Botines Adidas Predator', 140, 'adidas-predator')">Agregar</button>
-        </div>
-      </div>
-      <div class="producto">
-        <img src="https://brunch.com.ar/wp-content/uploads/2021/04/IMG_7435-scaled.jpg" alt="Puma Future">
-        <div class="producto-info">
-          <span>Botines Puma Future - $110</span>
-          <button onclick="agregarAlCarrito('Botines Puma Future', 110, 'puma-future')">Agregar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="categoria" onclick="toggleMenu('camisetas')">
-    <h2>Camisetas</h2>
-    <div class="productos" id="camisetas">
-      <div class="producto">
-        <img src="https://acdn-us.mitiendanube.com/stores/001/106/550/products/arg1-8c236e7773ecab0d2916638527231867-640-0.jpg" alt="Camiseta Argentina">
-        <div class="producto-info">
-          <span>Camiseta Argentina 2022 - $90</span>
-          <button onclick="agregarAlCarrito('Camiseta Argentina 2022', 90, 'camiseta-arg')">Agregar</button>
-        </div>
-      </div>
-      <div class="producto">
-        <img src="https://acdn-us.mitiendanube.com/stores/001/312/744/products/brasil-photoroom-a3a484bc3d2b5d7e0617252271407052-480-0.jpg" alt="Camiseta Brasil">
-        <div class="producto-info">
-          <span>Camiseta Brasil 2024 - $85</span>
-          <button onclick="agregarAlCarrito('Camiseta Brasil 2024', 85, 'camiseta-brasil')">Agregar</button>
-        </div>
-      </div>
-      <div class="producto">
-        <img src="https://acdn-us.mitiendanube.com/stores/006/105/140/products/3179c1e6-f624616f187c28128e17171953608769-1024-1024.jpg" alt="Camiseta Real Madrid">
-        <div class="producto-info">
-          <span>Camiseta Real Madrid 2024 - $100</span>
-          <button onclick="agregarAlCarrito('Camiseta Real Madrid 2024', 100, 'camiseta-rm')">Agregar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="carrito">
-    <h2>Carrito de Compras</h2>
-    <ul id="listaCarrito"></ul>
-    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
-
-    <label for="codigo">Código de descuento:</label>
-    <input type="text" id="codigo" placeholder="Escribe tu código">
-    <button onclick="aplicarDescuento()">Aplicar descuento</button>
-
-    <p><strong>Total con descuento:</strong> $<span id="totalDescuento">0.00</span></p>
-
-    <button onclick="finalizarCompra()">Finalizar compra</button>
-  </div>
-
-  <div id="comprobante" style="display: none;">
-    <h2>Comprobante de Compra</h2>
-    <ul id="resumenCompra"></ul>
-    <p><strong>Total Pagado:</strong> $<span id="totalPagado"></span></p>
-    <p>Gracias por tu compra. Se ha enviado un comprobante al administrador.</p>
-  </div>
-
-  <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
-    <input type="hidden" name="resumen" id="inputResumen">
-    <input type="hidden" name="total" id="inputTotal">
-  </form>
-
-  <div id="toast-container"></div>
-
-  <div style="margin-top: 30px; text-align: center;">
-    <button onclick="copiarCVU()">Copiar CVU para pago</button>
-  </div>
-
-  <script>
-    let carrito = [];
-    let totalBruto = 0; // Total sin descuentos
-    let totalFinal = 0; // Total con descuentos aplicados
-    let descuentoAplicado = { tipo: null, valor: 0 }; // Para rastrear el descuento activo
-
-    // Estructura de productos para una mejor gestión y futuras expansiones
-    const productosDisponibles = {
-        'nike-mercurial': { nombre: 'Botines Nike Mercurial', precio: 120 },
-        'adidas-predator': { nombre: 'Botines Adidas Predator', precio: 140 },
-        'puma-future': { nombre: 'Botines Puma Future', precio: 110 },
-        'camiseta-arg': { nombre: 'Camiseta Argentina 2022', precio: 90 },
-        'camiseta-brasil': { nombre: 'Camiseta Brasil 2024', precio: 85 },
-        'camiseta-rm': { nombre: 'Camiseta Real Madrid 2024', precio: 100 }
-    };
-
-    // Códigos de descuento con tipos: 'porcentaje' o 'fijo'
-    const codigosDescuento = {
-        "YO2025": { tipo: 'fijo', valor: 50 }, // Descuento fijo de $50
-        "FUTBOL10": { tipo: 'porcentaje', valor: 10 }, // 10% de descuento
-        "CAMISETA20": { tipo: 'porcentaje', valor: 20 }, // 20% de descuento
-        "ENVIO100": { tipo: 'fijo', valor: 100 } // Descuento fijo de $100
-    };
-
-    const miCVU = "0000003100002113037276"; // ¡CAMBIA ESTO POR TU CVU REAL!
-
-    // --- Funciones de Utilidad ---
-
-    function showToast(message, type = 'info') {
-        const toastContainer = document.getElementById('toast-container');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10); // Pequeño retraso para que la transición funcione
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, 3000);
-    }
-
-    function toggleMenu(id) {
-        const menu = document.getElementById(id);
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function agregarAlCarrito(nombre, precio, idProducto) {
-        const itemExistente = carrito.find(item => item.id === idProducto);
-
-        if (itemExistente) {
-            itemExistente.cantidad++;
-            itemExistente.subtotal = itemExistente.cantidad * itemExistente.precio;
-        } else {
-            carrito.push({ id: idProducto, nombre, precio, cantidad: 1, subtotal: precio });
-        }
-        actualizarCarrito();
-        showToast(`"${nombre}" añadido al carrito!`, 'success');
-    }
-
-    function eliminarDelCarrito(idProducto) {
-        const itemIndex = carrito.findIndex(item => item.id === idProducto);
-
-        if (itemIndex > -1) {
-            if (carrito[itemIndex].cantidad > 1) {
-                carrito[itemIndex].cantidad--;
-                carrito[itemIndex].subtotal = carrito[itemIndex].cantidad * carrito[itemIndex].precio;
-            } else {
-                carrito.splice(itemIndex, 1);
-            }
-            actualizarCarrito();
-            showToast('Producto eliminado del carrito.', 'info');
-        }
-    }
-
-    function actualizarCarrito() {
-        const lista = document.getElementById('listaCarrito');
-        lista.innerHTML = '';
-        totalBruto = 0;
-
-        carrito.forEach(item => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="item-details">
-                    ${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}
-                </div>
-                <div>
-                    <button onclick="eliminarDelCarrito('${item.id}')">X</button>
-                </div>
-            `;
-            lista.appendChild(li);
-            totalBruto += item.subtotal;
-        });
-
-        document.getElementById('total').textContent = totalBruto.toFixed(2);
-        // Recalcular totalFinal al actualizar el carrito
-        aplicarDescuento(true); // Se recalcula el descuento si ya había uno aplicado
-    }
-
-    function aplicarDescuento(recalcular = false) {
-        const codigoInput = document.getElementById('codigo');
-        const codigo = codigoInput.value.trim().toUpperCase();
-        const descuentoInfo = codigosDescuento[codigo];
-
-        let mensajeDescuento = '';
-        let tipoMensaje = 'info';
-
-        if (!recalcular) { // Solo si no es una llamada de "recalcular"
-            if (descuentoInfo) {
-                descuentoAplicado = { tipo: descuentoInfo.tipo, valor: descuentoInfo.valor, codigo: codigo };
-                mensajeDescuento = `Código "${codigo}" aplicado correctamente.`;
-                tipoMensaje = 'success';
-            } else if (codigo === "" && descuentoAplicado.codigo) {
-                // Si el campo está vacío y había un descuento, lo reseteamos
-                descuentoAplicado = { tipo: null, valor: 0 };
-                mensajeDescuento = 'Descuento reseteado.';
-                tipoMensaje = 'info';
-            } else {
-                descuentoAplicado = { tipo: null, valor: 0 }; // Resetea si el código es inválido
-                mensajeDescuento = 'Código de descuento inválido o no encontrado.';
-                tipoMensaje = 'error';
-            }
-            showToast(mensajeDescuento, tipoMensaje);
-        }
-
-        // Aplicar el descuento al totalBruto
-        let tempTotal = totalBruto;
-        if (descuentoAplicado.tipo === 'porcentaje') {
-            tempTotal = totalBruto - (totalBruto * descuentoAplicado.valor / 100);
-        } else if (descuentoAplicado.tipo === 'fijo') {
-            tempTotal = totalBruto - descuentoAplicado.valor;
-        }
-        totalFinal = Math.max(0, tempTotal); // Asegura que el total no sea negativo
-
-        document.getElementById('totalDescuento').textContent = totalFinal.toFixed(2);
-    }
-
-    function finalizarCompra() {
-        if (carrito.length === 0) {
-            showToast('El carrito está vacío. Agrega productos para finalizar la compra.', 'error');
-            return;
-        }
-
-        const resumen = document.getElementById('resumenCompra');
-        resumen.innerHTML = '';
-        let resumenTexto = '';
-
-        carrito.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}`;
-            resumen.appendChild(li);
-            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}; `;
-        });
-
-        document.getElementById('totalPagado').textContent = totalFinal.toFixed(2);
-        document.getElementById('comprobante').style.display = 'block';
-
-        // Rellenar y enviar formulario a Formspree
-        document.getElementById('inputResumen').value = resumenTexto.trim();
-        document.getElementById('inputTotal').value = totalFinal.toFixed(2);
-        document.getElementById('formularioCompra').submit();
-
-        // Limpiar carrito después de enviar
-        carrito = [];
-        descuentoAplicado = { tipo: null, valor: 0 }; // Reiniciar el descuento
-        document.getElementById('codigo').value = ''; // Limpiar el input de código
-        actualizarCarrito(); // Limpiar la vista del carrito
-        showToast('¡Compra finalizada con éxito! Gracias por tu compra.', 'success');
-    }
-
-    function copiarCVU() {
-        navigator.clipboard.writeText(miCVU).then(() => {
-            showToast('CVU copiado al portapapeles ✅', 'success');
-        }).catch(err => {
-            showToast('No se pudo copiar el CVU. Por favor, cópialo manualmente.', 'error');
-        });
-    }
-
-    // Inicializar el carrito al cargar la página
-    document.addEventListener('DOMContentLoaded', () => {
-        actualizarCarrito();
-    });
-  </script>
-</body>
+  </body>
 </html>
