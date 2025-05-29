@@ -612,8 +612,34 @@
     const instagramTiendaUsername = '@recargas_ff_express'; // Tu usuario de Instagram REAL. ¡Cámbialo si es diferente!
     const nombreTienda = 'Indumentaria Fútbol'; // Nombre de tu tienda. ¡Cámbialo si es diferente!
 
-    // Lista de palabras ofensivas o no deseadas (puedes expandirla)
-    const palabrasProhibidas = ['puto', 'puta', 'mierda', 'gil', 'boludo', 'tarado', 'idiota', 'estupido', 'caca', 'pene', 'vagina', 'concha', 'trolo', 'maricon', 'zorra', 'mufa', 'bosta']; // Agrega más si lo consideras necesario
+    // Lista de palabras ofensivas o no deseadas (MÁS ROBUSTA)
+    const palabrasProhibidas = [
+        'puto', 'puta', 'putita', 'putazo',
+        'mierda', 'mierdoso',
+        'gil', 'giles', 'gilipollas',
+        'boludo', 'boluda', 'boludes',
+        'tarado', 'tarada', 'tarados',
+        'idiota', 'idiotas',
+        'estupido', 'estupida', 'estupidos',
+        'pito', 'pitos', // Mantenemos pito y sus variaciones
+        'caca', 'cagar', 'cagada',
+        'pene', 'penes',
+        'vagina', 'vaginas',
+        'concha', 'conchas',
+        'trolo', 'trola', 'trolos',
+        'maricon', 'maricones', 'maricona',
+        'zorra', 'zorras',
+        'forro', 'forra',
+        'mufa', 'mufas',
+        'bosta', 'bostas',
+        'orto',
+        'culo',
+        'verga',
+        'carajo',
+        'choto', 'chota',
+        'mogolico', 'mogolica', 'mogolicos',
+        'pelotudo', 'pelotuda' // Agregadas algunas más comunes en el argot local
+    ];
 
     // --- Funciones de Utilidad ---
 
@@ -768,13 +794,19 @@
         return `PEDIDO-${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
     }
 
-    // Función de validación de palabras ofensivas
+    // Función de validación de palabras ofensivas MEJORADA
     function contienePalabrasProhibidas(texto) {
-        const textoLowerCase = texto.toLowerCase();
+        // Normalizar el texto: a minúsculas, sin acentos, y reemplazar símbolos por espacios
+        let textoNormalizado = texto.toLowerCase()
+                                   .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remueve acentos
+                                   .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g," ") // Reemplaza puntuación por espacios
+                                   .replace(/\s{2,}/g," "); // Elimina espacios duplicados
+
         for (const palabra of palabrasProhibidas) {
-            // Usar regex para buscar la palabra completa y no partes de otras palabras
-            const regex = new RegExp(`\\b${palabra}\\b`, 'i');
-            if (regex.test(textoLowerCase)) {
+            // Utilizamos una expresión regular para buscar la palabra completa con límites de palabra (\b)
+            // Esto evita falsos positivos como "miercoles" detectando "mierda"
+            const regex = new RegExp(`\\b${palabra}\\b`, 'i'); // 'i' para insensible a mayúsculas/minúsculas
+            if (regex.test(textoNormalizado)) {
                 return true;
             }
         }
