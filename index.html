@@ -473,7 +473,7 @@
     let carrito = [];
     let totalBruto = 0; // Total sin descuentos
     let totalFinal = 0; // Total con descuentos aplicados
-    let descuentoAplicado = { tipo: null, valor: 0 }; // Para rastrear el descuento activo
+    let descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Para rastrear el descuento activo
 
     // Estructura de productos para una mejor gestión y futuras expansiones
     const productosDisponibles = {
@@ -487,10 +487,14 @@
 
     // Códigos de descuento con tipos: 'porcentaje' o 'fijo'
     const codigosDescuento = {
-        "YO2025": { tipo: 'fijo', valor: 50 }, // Descuento fijo de $50
-        "FUTBOL10": { tipo: 'porcentaje', valor: 10 }, // 10% de descuento
-        "CAMISETA20": { tipo: 'porcentaje', valor: 20 }, // 20% de descuento
-        "ENVIO100": { tipo: 'fijo', valor: 100 } // Descuento fijo de $100
+        // --- CÓDIGO DE TESTEO ESPECIAL (solo para ti) ---
+        "ERICESPECIAL$0": { tipo: 'especial_gratis', valor: 0 }, // Deja el total en 0
+
+        // --- CÓDIGOS NORMALES PARA CLIENTES ---
+        "PRIMERACOMPRA": { tipo: 'porcentaje', valor: 15 }, // 15% de descuento en la primera compra
+        "GANAGOL": { tipo: 'fijo', valor: 20 }, // Descuento fijo de $20
+        "OFERTA25": { tipo: 'porcentaje', valor: 25 }, // 25% de descuento
+        "AMIGOS10": { tipo: 'porcentaje', valor: 10 } // 10% de descuento
     };
 
     const miCVU = "0000003100002113037276"; // ¡CAMBIA ESTO POR TU CVU REAL!
@@ -584,18 +588,23 @@
         let mensajeDescuento = '';
         let tipoMensaje = 'info';
 
-        if (!recalcular) { // Solo si no es una llamada de "recalcular"
+        // Solo si no es una llamada de "recalcular" desde actualizarCarrito()
+        if (!recalcular) {
             if (descuentoInfo) {
                 descuentoAplicado = { tipo: descuentoInfo.tipo, valor: descuentoInfo.valor, codigo: codigo };
-                mensajeDescuento = `Código "${codigo}" aplicado correctamente.`;
+                if (descuentoInfo.tipo === 'especial_gratis') {
+                    mensajeDescuento = `¡Descuento especial "${codigo}" utilizado! Valor: $0`;
+                } else {
+                    mensajeDescuento = `Código "${codigo}" aplicado correctamente.`;
+                }
                 tipoMensaje = 'success';
             } else if (codigo === "" && descuentoAplicado.codigo) {
                 // Si el campo está vacío y había un descuento, lo reseteamos
-                descuentoAplicado = { tipo: null, valor: 0 };
+                descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Resetear también el código
                 mensajeDescuento = 'Descuento reseteado.';
                 tipoMensaje = 'info';
             } else {
-                descuentoAplicado = { tipo: null, valor: 0 }; // Resetea si el código es inválido
+                descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Resetea si el código es inválido
                 mensajeDescuento = 'Código de descuento inválido o no encontrado.';
                 tipoMensaje = 'error';
             }
@@ -608,6 +617,8 @@
             tempTotal = totalBruto - (totalBruto * descuentoAplicado.valor / 100);
         } else if (descuentoAplicado.tipo === 'fijo') {
             tempTotal = totalBruto - descuentoAplicado.valor;
+        } else if (descuentoAplicado.tipo === 'especial_gratis') {
+            tempTotal = 0; // Para el código especial, el total es 0
         }
         totalFinal = Math.max(0, tempTotal); // Asegura que el total no sea negativo
 
@@ -667,7 +678,7 @@
 
         // Limpiar carrito y mostrar mensaje antes de redirigir
         carrito = [];
-        descuentoAplicado = { tipo: null, valor: 0 }; // Reiniciar el descuento
+        descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Reiniciar el descuento, incluyendo el código
         document.getElementById('codigo').value = ''; // Limpiar el input de código
         actualizarCarrito(); // Limpiar la vista del carrito (esto también resetea totalFinal)
 
