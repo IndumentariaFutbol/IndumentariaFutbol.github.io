@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tienda de Fútbol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1b5e20;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+    }
+
+    .categoria {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .categoria:hover {
+      transform: scale(1.01);
+    }
+
+    .categoria h2 {
+      color: #2e7d32;
+      font-size: 1.5em;
+    }
+
+    .productos {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .producto {
+      background: #f1f8e9;
+      border-radius: 10px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: background 0.2s;
+    }
+
+    .producto:hover {
+      background: #dcedc8;
+    }
+
+    .producto img {
+      width: 100px;
+      height: auto;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+    }
+
+    .producto-info {
+      flex: 1;
+    }
+
+    .producto-info span {
+      font-weight: 600;
+    }
+
+    .producto button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .producto button:hover {
+      background-color: #1b5e20;
+    }
+
+    #carrito, #comprobante {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+    }
+
+    #carrito h2, #comprobante h2 {
+      color: #33691e;
+    }
+
+    #listaCarrito li {
+      margin-bottom: 10px;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #listaCarrito li .item-details {
+        flex-grow: 1;
+    }
+
+    #listaCarrito button {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    /* Estilos para las notificaciones Toast */
+    #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .toast {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .toast.show {
+        opacity: 1;
+    }
+
+    .toast.success {
+        background-color: #4CAF50; /* Verde */
+    }
+
+    .toast.error {
+        background-color: #f44336; /* Rojo */
+    }
+
+    .toast.info {
+        background-color: #2196F3; /* Azul */
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      font-weight: bold;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background-color: #43a047;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #2e7d32;
+    }
+
+    #total, #totalDescuento, #totalPagado {
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    @media (max-width: 600px) {
+      .producto {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .producto img {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Tienda de Fútbol</h1>
+
+  <div class="categoria" onclick="toggleMenu('botines')">
+    <h2>Botines</h2>
+    <div class="productos" id="botines">
+      <div class="producto">
+        <img src="https://i0.wp.com/www.sitemarca.com/wp-content/uploads/2019/07/Nike-Mercurial-360-2019-8.jpg" alt="Nike Mercurial">
+        <div class="producto-info">
+          <span>Botines Nike Mercurial - $120</span>
+          <button onclick="agregarAlCarrito('Botines Nike Mercurial', 120, 'nike-mercurial')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/6bf310c6ec0449c2b38c612751070302_9366/Botines_Predator_Elite_Terreno_Firme_Verde_IG8771_HM1.jpg" alt="Adidas Predator">
+        <div class="producto-info">
+          <span>Botines Adidas Predator - $140</span>
+          <button onclick="agregarAlCarrito('Botines Adidas Predator', 140, 'adidas-predator')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://brunch.com.ar/wp-content/uploads/2021/04/IMG_7435-scaled.jpg" alt="Puma Future">
+        <div class="producto-info">
+          <span>Botines Puma Future - $110</span>
+          <button onclick="agregarAlCarrito('Botines Puma Future', 110, 'puma-future')">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="categoria" onclick="toggleMenu('camisetas')">
+    <h2>Camisetas</h2>
+    <div class="productos" id="camisetas">
+      <div class="producto">
+        <img src="https://acdn-us.mitiendanube.com/stores/001/106/550/products/arg1-8c236e7773ecab0d2916638527231867-640-0.jpg" alt="Camiseta Argentina">
+        <div class="producto-info">
+          <span>Camiseta Argentina 2022 - $90</span>
+          <button onclick="agregarAlCarrito('Camiseta Argentina 2022', 90, 'camiseta-arg')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://acdn-us.mitiendanube.com/stores/001/312/744/products/brasil-photoroom-a3a484bc3d2b5d7e0617252271407052-480-0.jpg" alt="Camiseta Brasil">
+        <div class="producto-info">
+          <span>Camiseta Brasil 2024 - $85</span>
+          <button onclick="agregarAlCarrito('Camiseta Brasil 2024', 85, 'camiseta-brasil')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://acdn-us.mitiendanube.com/stores/006/105/140/products/3179c1e6-f624616f187c28128e17171953608769-1024-1024.jpg" alt="Camiseta Real Madrid">
+        <div class="producto-info">
+          <span>Camiseta Real Madrid 2024 - $100</span>
+          <button onclick="agregarAlCarrito('Camiseta Real Madrid 2024', 100, 'camiseta-rm')">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="carrito">
+    <h2>Carrito de Compras</h2>
+    <ul id="listaCarrito"></ul>
+    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+
+    <label for="codigo">Código de descuento:</label>
+    <input type="text" id="codigo" placeholder="Escribe tu código">
+    <button onclick="aplicarDescuento()">Aplicar descuento</button>
+
+    <p><strong>Total con descuento:</strong> $<span id="totalDescuento">0.00</span></p>
+
+    <button onclick="finalizarCompra()">Finalizar compra</button>
+  </div>
+
+  <div id="comprobante" style="display: none;">
+    <h2>Comprobante de Compra</h2>
+    <ul id="resumenCompra"></ul>
+    <p><strong>Total Pagado:</strong> $<span id="totalPagado"></span></p>
+    <p>Gracias por tu compra. Se ha enviado un comprobante al administrador.</p>
+  </div>
+
+  <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
+    <input type="hidden" name="resumen" id="inputResumen">
+    <input type="hidden" name="total" id="inputTotal">
+  </form>
+
+  <div id="toast-container"></div>
+
+  <div style="margin-top: 30px; text-align: center;">
+    <button onclick="copiarCVU()">Copiar CVU para pago</button>
+  </div>
+
+  <script>
+    let carrito = [];
+    let totalBruto = 0; // Total sin descuentos
+    let totalFinal = 0; // Total con descuentos aplicados
+    let descuentoAplicado = { tipo: null, valor: 0 }; // Para rastrear el descuento activo
+
+    // Estructura de productos para una mejor gestión y futuras expansiones
+    const productosDisponibles = {
+        'nike-mercurial': { nombre: 'Botines Nike Mercurial', precio: 120 },
+        'adidas-predator': { nombre: 'Botines Adidas Predator', precio: 140 },
+        'puma-future': { nombre: 'Botines Puma Future', precio: 110 },
+        'camiseta-arg': { nombre: 'Camiseta Argentina 2022', precio: 90 },
+        'camiseta-brasil': { nombre: 'Camiseta Brasil 2024', precio: 85 },
+        'camiseta-rm': { nombre: 'Camiseta Real Madrid 2024', precio: 100 }
+    };
+
+    // Códigos de descuento con tipos: 'porcentaje' o 'fijo'
+    const codigosDescuento = {
+        "YO2025": { tipo: 'fijo', valor: 50 }, // Descuento fijo de $50
+        "FUTBOL10": { tipo: 'porcentaje', valor: 10 }, // 10% de descuento
+        "CAMISETA20": { tipo: 'porcentaje', valor: 20 }, // 20% de descuento
+        "ENVIO100": { tipo: 'fijo', valor: 100 } // Descuento fijo de $100
+    };
+
+    const miCVU = "0000003100002113037276"; // ¡CAMBIA ESTO POR TU CVU REAL!
+
+    // --- Funciones de Utilidad ---
+
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10); // Pequeño retraso para que la transición funcione
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 3000);
+    }
+
+    function toggleMenu(id) {
+        const menu = document.getElementById(id);
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function agregarAlCarrito(nombre, precio, idProducto) {
+        const itemExistente = carrito.find(item => item.id === idProducto);
+
+        if (itemExistente) {
+            itemExistente.cantidad++;
+            itemExistente.subtotal = itemExistente.cantidad * itemExistente.precio;
+        } else {
+            carrito.push({ id: idProducto, nombre, precio, cantidad: 1, subtotal: precio });
+        }
+        actualizarCarrito();
+        showToast(`"${nombre}" añadido al carrito!`, 'success');
+    }
+
+    function eliminarDelCarrito(idProducto) {
+        const itemIndex = carrito.findIndex(item => item.id === idProducto);
+
+        if (itemIndex > -1) {
+            if (carrito[itemIndex].cantidad > 1) {
+                carrito[itemIndex].cantidad--;
+                carrito[itemIndex].subtotal = carrito[itemIndex].cantidad * carrito[itemIndex].precio;
+            } else {
+                carrito.splice(itemIndex, 1);
+            }
+            actualizarCarrito();
+            showToast('Producto eliminado del carrito.', 'info');
+        }
+    }
+
+    function actualizarCarrito() {
+        const lista = document.getElementById('listaCarrito');
+        lista.innerHTML = '';
+        totalBruto = 0;
+
+        carrito.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="item-details">
+                    ${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}
+                </div>
+                <div>
+                    <button onclick="eliminarDelCarrito('${item.id}')">X</button>
+                </div>
+            `;
+            lista.appendChild(li);
+            totalBruto += item.subtotal;
+        });
+
+        document.getElementById('total').textContent = totalBruto.toFixed(2);
+        // Recalcular totalFinal al actualizar el carrito
+        aplicarDescuento(true); // Se recalcula el descuento si ya había uno aplicado
+    }
+
+    function aplicarDescuento(recalcular = false) {
+        const codigoInput = document.getElementById('codigo');
+        const codigo = codigoInput.value.trim().toUpperCase();
+        const descuentoInfo = codigosDescuento[codigo];
+
+        let mensajeDescuento = '';
+        let tipoMensaje = 'info';
+
+        if (!recalcular) { // Solo si no es una llamada de "recalcular"
+            if (descuentoInfo) {
+                descuentoAplicado = { tipo: descuentoInfo.tipo, valor: descuentoInfo.valor, codigo: codigo };
+                mensajeDescuento = `Código "${codigo}" aplicado correctamente.`;
+                tipoMensaje = 'success';
+            } else if (codigo === "" && descuentoAplicado.codigo) {
+                // Si el campo está vacío y había un descuento, lo reseteamos
+                descuentoAplicado = { tipo: null, valor: 0 };
+                mensajeDescuento = 'Descuento reseteado.';
+                tipoMensaje = 'info';
+            } else {
+                descuentoAplicado = { tipo: null, valor: 0 }; // Resetea si el código es inválido
+                mensajeDescuento = 'Código de descuento inválido o no encontrado.';
+                tipoMensaje = 'error';
+            }
+            showToast(mensajeDescuento, tipoMensaje);
+        }
+
+        // Aplicar el descuento al totalBruto
+        let tempTotal = totalBruto;
+        if (descuentoAplicado.tipo === 'porcentaje') {
+            tempTotal = totalBruto - (totalBruto * descuentoAplicado.valor / 100);
+        } else if (descuentoAplicado.tipo === 'fijo') {
+            tempTotal = totalBruto - descuentoAplicado.valor;
+        }
+        totalFinal = Math.max(0, tempTotal); // Asegura que el total no sea negativo
+
+        document.getElementById('totalDescuento').textContent = totalFinal.toFixed(2);
+    }
+
+    function finalizarCompra() {
+        if (carrito.length === 0) {
+            showToast('El carrito está vacío. Agrega productos para finalizar la compra.', 'error');
+            return;
+        }
+
+        const resumen = document.getElementById('resumenCompra');
+        resumen.innerHTML = '';
+        let resumenTexto = '';
+
+        carrito.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}`;
+            resumen.appendChild(li);
+            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}; `;
+        });
+
+        document.getElementById('totalPagado').textContent = totalFinal.toFixed(2);
+        document.getElementById('comprobante').style.display = 'block';
+
+        // Rellenar y enviar formulario a Formspree
+        document.getElementById('inputResumen').value = resumenTexto.trim();
+        document.getElementById('inputTotal').value = totalFinal.toFixed(2);
+        document.getElementById('formularioCompra').submit();
+
+        // Limpiar carrito después de enviar
+        carrito = [];
+        descuentoAplicado = { tipo: null, valor: 0 }; // Reiniciar el descuento
+        document.getElementById('codigo').value = ''; // Limpiar el input de código
+        actualizarCarrito(); // Limpiar la vista del carrito
+        showToast('¡Compra finalizada con éxito! Gracias por tu compra.', 'success');
+    }
+
+    function copiarCVU() {
+        navigator.clipboard.writeText(miCVU).then(() => {
+            showToast('CVU copiado al portapapeles ✅', 'success');
+        }).catch(err => {
+            showToast('No se pudo copiar el CVU. Por favor, cópialo manualmente.', 'error');
+        });
+    }
+
+    // Inicializar el carrito al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarCarrito();
+    });
+  </script>
+</body>
+</html>
