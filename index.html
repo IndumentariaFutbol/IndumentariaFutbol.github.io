@@ -348,6 +348,18 @@
       box-shadow: 0 6px 12px rgba(0,0,0,0.2);
     }
 
+    /* Estilo específico para el botón de donación */
+    #btnDonarCafecito {
+        background-color: #ff5722; /* Un naranja más amigable, como el de "cafecito" */
+        box-shadow: 0 4px 8px rgba(255, 87, 34, 0.3); /* Sombra con el color de donación */
+    }
+    #btnDonarCafecito:hover {
+        background-color: #e64a19; /* Naranja más oscuro al pasar el ratón */
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(255, 87, 34, 0.4);
+    }
+
+
     #total,
     #totalDescuento,
     #totalPagado {
@@ -557,21 +569,26 @@
   <div id="comprobante" style="display: none;">
     <h2>Comprobante de Compra</h2>
     <p><strong>ID de Pedido:</strong> <span id="idPedidoComprobante"></span></p>
+    <p><strong>Fecha y Hora:</strong> <span id="fechaHoraComprobante"></span></p>
     <ul id="resumenCompra"></ul>
     <p><strong>Total Pagado:</strong> $<span id="totalPagado"></span></p>
     <p>Gracias por tu compra. Se ha enviado un comprobante al administrador.</p>
   </div>
 
   <form id="formularioCompra" action="https://formspree.io/f/mwpogygp" method="POST" style="display:none;">
-    <input type="hidden" name="id_pedido" id="inputIdPedido"> <input type="hidden" name="resumen_pedido" id="inputResumen">
+    <input type="hidden" name="id_pedido" id="inputIdPedido">
+    <input type="hidden" name="fecha_hora_pedido" id="inputFechaHoraPedido">
+    <input type="hidden" name="resumen_pedido" id="inputResumen">
     <input type="hidden" name="total_final_pedido" id="inputTotal">
-    <input type="hidden" name="nombre_cliente" id="inputNombreCliente"> <input type="hidden" name="instagram_cliente" id="inputInstagramCliente"> </form>
+    <input type="hidden" name="nombre_cliente" id="inputNombreCliente">
+    <input type="hidden" name="instagram_cliente" id="inputInstagramCliente">
+  </form>
 
   <div id="toast-container"></div>
 
   <div style="margin-top: 30px; text-align: center;">
     <div class="button-group">
-        <button onclick="copiarCVU()">Copiar CVU para pago</button>
+        <button id="btnDonarCafecito" onclick="donarCafecito()">Donar un Cafecito (CVU)</button>
     </div>
   </div>
 
@@ -793,6 +810,20 @@
         return `PEDIDO-${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
     }
 
+    // Función para formatear la fecha y hora legible
+    function formatearFechaHora(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false // Formato de 24 horas
+        };
+        return date.toLocaleString('es-AR', options);
+    }
+
     // Función de validación de palabras ofensivas MEJORADA
     function contienePalabrasProhibidas(texto) {
         // Normalizar el texto: a minúsculas y sin acentos
@@ -884,8 +915,11 @@
             instagramCliente = '@' + instagramCliente;
         }
 
-
+        // Generar fecha y hora actuales
+        const now = new Date();
+        const fechaHoraFormateada = formatearFechaHora(now);
         const idPedido = generarIdPedido();
+
 
         const resumen = document.getElementById('resumenCompra');
         resumen.innerHTML = '';
@@ -902,11 +936,13 @@
         aplicarDescuento(true);
         document.getElementById('totalPagado').textContent = totalFinal.toLocaleString('es-AR');
         document.getElementById('idPedidoComprobante').textContent = idPedido;
+        document.getElementById('fechaHoraComprobante').textContent = fechaHoraFormateada; // Mostrar fecha y hora en comprobante
 
         // 1. Preparar el NUEVO mensaje para Instagram DM y Copiado (Desde la perspectiva del COMPRADOR)
         let instagramMessage = `¡Hola ${instagramTiendaUsername}! 👋 Acabo de realizar una compra en ${nombreTienda}.\n\n`;
         instagramMessage += `Mi nombre es ${nombreClienteRegistrado} y mi usuario de Instagram es ${instagramCliente}.\n\n`;
-        instagramMessage += `El ID de mi pedido es: #${idPedido}\n\n`;
+        instagramMessage += `El ID de mi pedido es: #${idPedido}\n`;
+        instagramMessage += `Fecha y Hora del Pedido: ${fechaHoraFormateada}\n\n`; // Incluir fecha y hora
         instagramMessage += `Resumen de la compra:\n${resumenTexto}\n`;
         instagramMessage += `El total final es: $${totalFinal.toLocaleString('es-AR')}\n\n`;
         instagramMessage += `¡Espero tu mensaje para coordinar el pago y el envío!`;
@@ -917,7 +953,8 @@
         // 2. Enviar a Formspree (comprobante por Gmail)
         const formularioCompra = document.getElementById('formularioCompra');
         document.getElementById('inputIdPedido').value = idPedido;
-        document.getElementById('inputResumen').value = `Pedido de ${nombreTienda}:\n\nID del Pedido: ${idPedido}\n\n${resumenTexto}\nTotal final: $${totalFinal.toLocaleString('es-AR')}\n\nNombre Cliente: ${nombreClienteRegistrado}\nInstagram Cliente: ${instagramCliente}`;
+        document.getElementById('inputFechaHoraPedido').value = fechaHoraFormateada; // Asignar fecha y hora al campo oculto
+        document.getElementById('inputResumen').value = `Pedido de ${nombreTienda}:\n\nID del Pedido: ${idPedido}\nFecha y Hora: ${fechaHoraFormateada}\n\n${resumenTexto}\nTotal final: $${totalFinal.toLocaleString('es-AR')}\n\nNombre Cliente: ${nombreClienteRegistrado}\nInstagram Cliente: ${instagramCliente}`;
         document.getElementById('inputTotal').value = totalFinal.toLocaleString('es-AR');
         document.getElementById('inputNombreCliente').value = nombreClienteRegistrado; // Asignar al campo oculto
         document.getElementById('inputInstagramCliente').value = instagramCliente; // Asignar al campo oculto
@@ -959,11 +996,18 @@
         formularioCompra.submit();
     }
 
-    function copiarCVU() {
+    function donarCafecito() {
         navigator.clipboard.writeText(miCVU).then(() => {
-            showToast('CVU copiado al portapapeles ✅', 'success');
+            showToast('¡Gracias por tu Cafecito! 🙏 CVU copiado al portapapeles. Puedes apoyarme escaneando el código QR en el perfil de Instagram de la tienda.', 'success', 7000);
+
+            // Opcional: Abrir Instagram en una nueva pestaña para que vean tu perfil
+            const instagramProfileURL = `https://www.instagram.com/${instagramTiendaUsername.replace('@', '')}/`;
+            setTimeout(() => {
+                window.open(instagramProfileURL, '_blank');
+            }, 3000); // Dale tiempo al usuario para leer el toast
         }).catch(err => {
-            showToast('No se pudo copiar el CVU. Por favor, cópialo manualmente.', 'error');
+            showToast('No se pudo copiar el CVU. Por favor, contáctanos por Instagram para donar.', 'error', 7000);
+            console.error('Error al copiar CVU:', err);
         });
     }
 
