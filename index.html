@@ -612,23 +612,19 @@
     const instagramTiendaUsername = '@recargas_ff_express'; // Tu usuario de Instagram REAL. ¡Cámbialo si es diferente!
     const nombreTienda = 'Indumentaria Fútbol'; // Nombre de tu tienda. ¡Cámbialo si es diferente!
 
-    // Lista de palabras ofensivas o no deseadas (MÁS ROBUSTA)
+    // Lista de palabras ofensivas o no deseadas (MÁS ROBUSTA Y CON VARIACIONES)
     const palabrasProhibidas = [
-        'puto', 'puta', 'putita', 'putazo',
-        'mierda', 'mierdoso',
-        'gil', 'giles', 'gilipollas',
-        'boludo', 'boluda', 'boludes',
-        'tarado', 'tarada', 'tarados',
-        'idiota', 'idiotas',
-        'estupido', 'estupida', 'estupidos',
-        'pito', 'pitos', // Mantenemos pito y sus variaciones
-        'caca', 'cagar', 'cagada',
+        'puto', 'puta', 'putit', 'putaz',
+        'mierda', 'mierdos',
+        'gil', 'bolud', 'tonto', 'tarad', 'idio', 'estupid',
+        'pito', 'pitos',
+        'caca', 'cagar', 'cagad',
         'pene', 'penes',
         'vagina', 'vaginas',
         'concha', 'conchas',
-        'trolo', 'trola', 'trolos',
-        'maricon', 'maricones', 'maricona',
-        'zorra', 'zorras',
+        'trolo', 'trola',
+        'maricon', 'maricona',
+        'zorr',
         'forro', 'forra',
         'mufa', 'mufas',
         'bosta', 'bostas',
@@ -638,8 +634,11 @@
         'carajo',
         'choto', 'chota',
         'mogolico', 'mogolica', 'mogolicos',
-        'pelotudo', 'pelotuda' // Agregadas algunas más comunes en el argot local
+        'pelotudo', 'pelotuda', 'pelotudez',
+        'imbecil', 'mongol', 'cretino', 'pajera', 'pajero',
+        'cojer', 'chupapija', 'chupapinga', 'sorete', 'gorila', 'desgraciado'
     ];
+
 
     // --- Funciones de Utilidad ---
 
@@ -796,17 +795,13 @@
 
     // Función de validación de palabras ofensivas MEJORADA
     function contienePalabrasProhibidas(texto) {
-        // Normalizar el texto: a minúsculas, sin acentos, y reemplazar símbolos por espacios
+        // Normalizar el texto: a minúsculas y sin acentos
         let textoNormalizado = texto.toLowerCase()
-                                   .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remueve acentos
-                                   .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g," ") // Reemplaza puntuación por espacios
-                                   .replace(/\s{2,}/g," "); // Elimina espacios duplicados
+                                   .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remueve acentos
 
         for (const palabra of palabrasProhibidas) {
-            // Utilizamos una expresión regular para buscar la palabra completa con límites de palabra (\b)
-            // Esto evita falsos positivos como "miercoles" detectando "mierda"
-            const regex = new RegExp(`\\b${palabra}\\b`, 'i'); // 'i' para insensible a mayúsculas/minúsculas
-            if (regex.test(textoNormalizado)) {
+            // Usamos .includes() para una detección más permisiva de subcadenas
+            if (textoNormalizado.includes(palabra)) {
                 return true;
             }
         }
@@ -828,6 +823,7 @@
             regNombreInput.focus();
             return;
         }
+        // Validar nombre con palabras prohibidas
         if (contienePalabrasProhibidas(nombre)) {
             showToast('El nombre ingresado contiene palabras no permitidas. Por favor, sé respetuoso.', 'error');
             regNombreInput.focus();
@@ -877,6 +873,7 @@
             instagramClienteInput.focus();
             return;
         }
+         // Validar Instagram con palabras prohibidas
          if (contienePalabrasProhibidas(instagramCliente)) {
             showToast('El usuario de Instagram ingresado contiene palabras no permitidas. Por favor, sé respetuoso.', 'error');
             instagramClienteInput.focus();
