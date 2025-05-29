@@ -14,216 +14,34 @@
     }
 
     :root {
-      /* Colores inspirados en Canva */
-      --primary-color: #0d47a1; /* Azul oscuro */
-      --secondary-color: #1976d2; /* Azul más claro */
-      --accent-color: #ffc107; /* Amarillo para acentos */
-      --light-bg: #e3f2fd; /* Fondo muy claro */
-      --card-bg: #fff; /* Fondo de tarjetas */
-      --text-color: #212121; /* Texto oscuro */
+      /* Colores inspirados en Canva con toque deportivo */
+      --primary-color: #0d47a1; /* Azul oscuro - como un azul marino de uniforme */
+      --secondary-color: #1976d2; /* Azul medio - vibrante, como el cielo */
+      --accent-color: #ffc107; /* Amarillo oro - para acentos y cosas importantes */
+      --light-bg: #e3f2fd; /* Fondo muy claro - como el aire en el campo */
+      --card-bg: #fff; /* Fondo de tarjetas - limpio y blanco */
+      --text-color: #212121; /* Texto oscuro - legible */
       --shadow-color: rgba(0, 0, 0, 0.1); /* Sombra suave */
+      --gradient-start: #e3f2fd; /* Inicio del degradado del body */
+      --gradient-end: #ffffff; /* Fin del degradado del body */
     }
 
     body {
       font-family: 'Poppins', sans-serif;
       /* Degradado sutil de fondo */
-      background: linear-gradient(to bottom, var(--light-bg), #fff);
+      background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
       color: var(--text-color);
       line-height: 1.6;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px;
+      min-height: 100vh; /* Asegura que el degradado ocupe toda la altura */
+      position: relative; /* Necesario para el pseudo-elemento de fondo */
+      overflow-x: hidden; /* Evita scroll horizontal en móviles */
     }
 
-    h1 {
-      text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 30px;
-      font-size: 2.5em;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-shadow: 1px 1px 2px var(--shadow-color);
-    }
-
-    .categoria,
-    #carrito,
-    #comprobante {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px var(--shadow-color);
-      transition: transform 0.3s ease;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    .categoria:hover {
-      transform: translateY(-5px);
-    }
-
-    .categoria h2 {
-      color: var(--secondary-color);
-      font-size: 1.8em;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-      font-weight: 600;
-    }
-
-    .productos {
-      display: none;
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px dashed #ccc;
-    }
-
-    .producto {
-      background: #f9f9f9;
-      border-radius: 8px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 4px var(--shadow-color);
-    }
-
-    .producto img {
-      width: 100px;
-      height: auto;
-      border-radius: 5px;
-      border: 2px solid var(--secondary-color);
-    }
-
-    .producto-info {
-      flex: 1;
-    }
-
-    .producto-info span {
-      font-weight: 600;
-      color: var(--primary-color);
-    }
-
-    .producto button {
-      background-color: var(--secondary-color);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .producto button:hover {
-      background-color: var(--primary-color);
-    }
-
-    #carrito h2,
-    #comprobante h2 {
-      color: var(--secondary-color);
-      font-size: 1.8em;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-      font-weight: 600;
-    }
-
-    #listaCarrito {
-      list-style: none;
-      padding: 0;
-    }
-
-    #listaCarrito li {
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #f0f0f0;
-      padding: 8px;
-      border-radius: 5px;
-    }
-
-    #listaCarrito button {
-      background-color: #e53935;
-      color: white;
-      border: none;
-      padding: 5px 8px;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-
-    #toast-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-    }
-
-    .toast {
-      background-color: #333;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 5px;
-      margin-top: 5px;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-    }
-
-    .toast.show {
-      opacity: 1;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      background-color: var(--secondary-color);
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: var(--primary-color);
-    }
-
-    #total,
-    #totalDescuento,
-    #totalPagado {
-      font-weight: 600;
-      color: var(--primary-color);
-      margin-top: 10px;
-    }
-
-    /* Media Queries para una mejor adaptación */
-    @media (max-width: 768px) {
-      .producto {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .producto img {
-        margin-bottom: 10px;
-      }
-    }
-
-    /* Estilos adicionales para imágenes de fondo y más */
+    /* Pseudo-elemento para la imagen de fondo sutil */
     body::before {
       content: "";
       position: fixed;
@@ -231,61 +49,618 @@
       left: 0;
       width: 100%;
       height: 100%;
-      /* Imagen de fondo sutil */
-      background-image: url('http://googleusercontent.com/image_generation_content/0'); /* Reemplaza con tu URL */
+      /* Ejemplo de imagen de fondo: una textura de campo de fútbol o un patrón abstracto */
+      /* Puedes cambiar esta URL por una que te guste más, por ejemplo, una sutil de campo o un patrón geométrico */
+      background-image: url('https://user-images.githubusercontent.com/97834575/157488099-a8c6a0c5-5a5c-4a3e-be98-a3d8b5a0b7e4.jpg'); /* Textura de campo de fútbol */
       background-size: cover;
       background-position: center;
-      opacity: 0.1; /* Ajusta la opacidad para que sea sutil */
-      z-index: -1;
+      opacity: 0.05; /* Muy sutil, para no distraer */
+      z-index: -1; /* Asegura que esté detrás de todo el contenido */
+      pointer-events: none; /* Evita que bloquee eventos de clic */
     }
 
-    .categoria, #carrito, #comprobante {
-        /* Borde sutil y sombra */
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      font-size: 2.8em; /* Un poco más grande */
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Sombra más pronunciada para el título */
+      width: 100%;
+      max-width: 900px;
     }
 
-    /* Estilos para la cuadrícula de productos */
+    .categoria,
+    #carrito,
+    #comprobante {
+      background: var(--card-bg);
+      border-radius: 12px; /* Más redondeado */
+      padding: 25px; /* Más padding */
+      margin-bottom: 25px;
+      box-shadow: 0 8px 16px var(--shadow-color); /* Sombra más pronounced */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid rgba(0,0,0,0.05); /* Borde sutil */
+    }
+
+    .categoria:hover {
+      transform: translateY(-5px); /* Pequeño levantamiento */
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Sombra más grande al pasar el ratón */
+    }
+
+    .categoria h2 {
+      color: var(--secondary-color);
+      font-size: 2em; /* Un poco más grande */
+      margin-bottom: 15px;
+      border-bottom: 2px solid #e0e0e0; /* Línea divisoria más clara */
+      padding-bottom: 10px;
+      font-weight: 600;
+    }
+
     .productos {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adaptable a diferentes tamaños de pantalla */
-        gap: 20px;
+      display: grid; /* Usamos Grid para el layout de los productos */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Columnas responsivas */
+      gap: 25px; /* Espacio entre productos */
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed #e0e0e0; /* Línea punteada sutil */
     }
 
     .producto {
-        flex-direction: column; /* Apila imagen y texto en pantallas pequeñas */
-        align-items: center; /* Centra los elementos */
-        text-align: center; /* Centra el texto */
+      background: #fdfdfd; /* Blanco casi puro para productos */
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column; /* Apila elementos en columna */
+      align-items: center; /* Centra horizontalmente */
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08); /* Sombra suave para productos */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-align: center; /* Centra el texto dentro del producto */
+    }
+
+    .producto:hover {
+      transform: translateY(-3px); /* Ligeramente hacia arriba */
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12); /* Sombra ligeramente más grande */
     }
 
     .producto img {
-        max-width: 100%; /* Asegura que la imagen no se desborde */
-        height: auto;
-        margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+      width: 180px; /* Tamaño de imagen más grande */
+      height: auto;
+      border-radius: 8px;
+      border: 3px solid var(--secondary-color); /* Borde distintivo */
+      object-fit: cover;
+      margin-bottom: 15px; /* Espacio debajo de la imagen */
     }
 
     .producto-info {
-        flex: none; /* Evita que el texto se estire */
-        width: 100%; /* Ocupa todo el ancho disponible */
+      flex: 1; /* Permite que la info del producto ocupe el espacio restante */
+      min-width: 100%; /* Ocupa todo el ancho disponible */
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* Espacio entre el span y el botón */
+      justify-content: center; /* Centra verticalmente */
+      align-items: center; /* Centra horizontalmente */
     }
 
-    /* Botones más modernos */
-    button {
-        background-color: var(--accent-color); /* Amarillo */
-        color: var(--text-color); /* Texto oscuro */
-        border-radius: 20px; /* Bordes redondeados */
-        padding: 12px 24px;
+    .producto-info span {
+      font-weight: 700;
+      font-size: 1.2em; /* Precio más grande */
+      color: var(--primary-color);
+    }
+
+    .producto button {
+      background-color: var(--accent-color); /* Amarillo vibrante */
+      color: var(--text-color); /* Texto oscuro para contraste */
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px; /* Botones muy redondeados */
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 1em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .producto button:hover {
+      background-color: #ffb300; /* Un poco más oscuro */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    #carrito h2,
+    #comprobante h2 {
+      color: var(--secondary-color);
+      font-size: 2em;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 10px;
+      font-weight: 600;
+    }
+
+    #listaCarrito {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    #listaCarrito li {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      background-color: #f7f7f7; /* Fondo sutil para cada ítem del carrito */
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.05);
+      font-size: 1.05em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    #listaCarrito li .item-details {
+        flex-grow: 1;
+        min-width: 180px;
+        word-break: break-word;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+
+    #listaCarrito button {
+      background-color: #e53935; /* Rojo más fuerte */
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-left: 15px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      font-weight: normal; /* Botón de eliminar más ligero */
+    }
+    #listaCarrito button:hover {
+        background-color: #c62828; /* Rojo más oscuro al hover */
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+
+    /* Estilos para las notificaciones Toast */
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-end;
+    }
+
+    .toast {
+      background-color: #333;
+      color: white;
+      padding: 15px 30px; /* Más padding */
+      border-radius: 10px; /* Más redondeado */
+      margin-top: 12px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      transform: translateX(100%);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* Sombra más definida */
+      max-width: 90%;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast.success { background-color: #4CAF50; }
+    .toast.error { background-color: #f44336; }
+    .toast.info { background-color: #2196F3; }
+
+    label {
         font-weight: 600;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-top: 15px;
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text-color);
     }
 
-    button:hover {
-        transform: translateY(-3px); /* Ligeramente hacia arriba */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2); /* Sombra de enfoque azul */
+        outline: none;
+    }
+
+    /* Botones generales de la tienda (Aplicar descuento, Finalizar compra, Copiar CVU) */
+    .button-group button { /* Usar una clase para agrupar */
+      background-color: var(--primary-color); /* Azul oscuro para los botones principales */
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-weight: 700;
+      border-radius: 25px; /* Muy redondeado */
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      width: auto;
+      display: inline-block;
+      font-size: 1.05em;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      margin-top: 20px;
+      margin-right: 10px; /* Espacio entre botones */
+    }
+
+    .button-group button:last-child {
+        margin-right: 0;
+    }
+
+    .button-group button:hover {
+      background-color: #003b8e; /* Un azul más oscuro */
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    #total,
+    #totalDescuento,
+    #totalPagado {
+      font-weight: 700;
+      color: var(--primary-color);
+      font-size: 1.5em; /* Más grande */
+      margin-top: 20px; /* Más espacio */
+      display: block;
+    }
+
+    #totalDescuento {
+        color: var(--accent-color); /* Color de acento para el total con descuento */
+        font-size: 1.6em; /* Aún más grande */
+    }
+    #totalPagado {
+        font-size: 2em; /* Gran tamaño para el total final */
+        color: var(--secondary-color);
+        margin-top: 25px;
+    }
+
+    /* Media Queries para una mejor adaptación */
+    @media (max-width: 768px) {
+      body { padding: 15px; }
+      h1 { font-size: 2.2em; margin-bottom: 25px; }
+      .categoria, #carrito, #comprobante { padding: 20px; margin-bottom: 20px; border-radius: 10px; }
+      .categoria h2, #carrito h2, #comprobante h2 { font-size: 1.6em; }
+      .productos { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+      .producto { padding: 15px; border-radius: 8px; }
+      .producto img { width: 150px; margin-bottom: 10px; }
+      .producto-info span { font-size: 1.1em; }
+      .producto button { padding: 8px 16px; font-size: 0.95em; border-radius: 20px; }
+      #toast-container { right: 10px; left: 10px; align-items: center; }
+      .toast { max-width: 100%; font-size: 0.9em; padding: 12px 25px; border-radius: 8px; }
+      input[type="text"], .button-group button { padding: 10px 18px; font-size: 0.95em; border-radius: 20px; }
+      #listaCarrito li { font-size: 0.95em; padding: 10px 15px; border-radius: 6px; }
+      #listaCarrito button { padding: 5px 9px; border-radius: 4px; }
+      #total, #totalDescuento, #totalPagado { font-size: 1.3em; }
+      #totalDescuento { font-size: 1.4em; }
+      #totalPagado { font-size: 1.8em; }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.8em; margin-bottom: 20px; }
+      .categoria h2, #carrito h2, #comprobante h2 { font-size: 1.4em; }
+      .categoria, #carrito, #comprobante { padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+      .productos { grid-template-columns: 1fr; gap: 15px; } /* Una sola columna en móviles pequeños */
+      .producto { padding: 12px; border-radius: 6px; }
+      .producto img { width: 120px; margin-bottom: 8px; }
+      .producto-info span { font-size: 1em; }
+      .producto button { padding: 8px 14px; font-size: 0.9em; border-radius: 18px; }
+      input[type="text"], .button-group button { padding: 8px 15px; font-size: 0.9em; border-radius: 18px; display: block; margin-left: 0; margin-right: 0; width: 100%; } /* Botones y inputs ocupan todo el ancho */
+      .button-group button + button { margin-top: 10px; } /* Espacio entre botones apilados */
+      #listaCarrito li { font-size: 0.9em; padding: 8px 12px; border-radius: 5px; flex-direction: column; align-items: flex-start; } /* Apila ítems en carrito */
+      #listaCarrito li .item-details { width: 100%; margin-bottom: 5px; }
+      #listaCarrito button { padding: 4px 8px; border-radius: 3px; margin-left: 0; width: 100%; }
+      #total, #totalDescuento, #totalPagado { font-size: 1.2em; }
+      #totalDescuento { font-size: 1.3em; }
+      #totalPagado { font-size: 1.6em; }
     }
   </style>
 </head>
 <body>
-  </body>
+  <h1>Tienda de Fútbol</h1>
+
+  <div class="categoria" onclick="toggleMenu('botines')">
+    <h2>Botines</h2>
+    <div class="productos" id="botines">
+      <div class="producto">
+        <img src="https://i0.wp.com/www.sitemarca.com/wp-content/uploads/2019/07/Nike-Mercurial-360-2019-8.jpg" alt="Nike Mercurial">
+        <div class="producto-info">
+          <span>Botines Nike Mercurial - $120</span>
+          <button onclick="agregarAlCarrito('Botines Nike Mercurial', 120, 'nike-mercurial')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/6bf310c6ec0449c2b38c612751070302_9366/Botines_Predator_Elite_Terreno_Firme_Verde_IG8771_HM1.jpg" alt="Adidas Predator">
+        <div class="producto-info">
+          <span>Botines Adidas Predator - $140</span>
+          <button onclick="agregarAlCarrito('Botines Adidas Predator', 140, 'adidas-predator')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://brunch.com.ar/wp-content/uploads/2021/04/IMG_7435-scaled.jpg" alt="Puma Future">
+        <div class="producto-info">
+          <span>Botines Puma Future - $110</span>
+          <button onclick="agregarAlCarrito('Botines Puma Future', 110, 'puma-future')">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="categoria" onclick="toggleMenu('camisetas')">
+    <h2>Camisetas</h2>
+    <div class="productos" id="camisetas">
+      <div class="producto">
+        <img src="https://acdn-us.mitiendanube.com/stores/001/106/550/products/arg1-8c236e7773ecab0d2916638527231867-640-0.jpg" alt="Camiseta Argentina">
+        <div class="producto-info">
+          <span>Camiseta Argentina 2022 - $90</span>
+          <button onclick="agregarAlCarrito('Camiseta Argentina 2022', 90, 'camiseta-arg')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://acdn-us.mitiendanube.com/stores/001/312/744/products/brasil-photoroom-a3a484bc3d2b5d7e0617252271407052-480-0.jpg" alt="Camiseta Brasil">
+        <div class="producto-info">
+          <span>Camiseta Brasil 2024 - $85</span>
+          <button onclick="agregarAlCarrito('Camiseta Brasil 2024', 85, 'camiseta-brasil')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://acdn-us.mitiendanube.com/stores/006/105/140/products/3179c1e6-f624616f187c28128e17171953608769-1024-1024.jpg" alt="Camiseta Real Madrid">
+        <div class="producto-info">
+          <span>Camiseta Real Madrid 2024 - $100</span>
+          <button onclick="agregarAlCarrito('Camiseta Real Madrid 2024', 100, 'camiseta-rm')">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="carrito">
+    <h2>Carrito de Compras</h2>
+    <ul id="listaCarrito"></ul>
+    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+
+    <label for="codigo">Código de descuento:</label>
+    <input type="text" id="codigo" placeholder="Escribe tu código">
+    <div class="button-group">
+        <button onclick="aplicarDescuento()">Aplicar descuento</button>
+    </div>
+
+    <p><strong>Total con descuento:</strong> $<span id="totalDescuento">0.00</span></p>
+
+    <div class="button-group">
+        <button onclick="finalizarCompra()">Finalizar compra</button>
+    </div>
+  </div>
+
+  <div id="comprobante" style="display: none;">
+    <h2>Comprobante de Compra</h2>
+    <ul id="resumenCompra"></ul>
+    <p><strong>Total Pagado:</strong> $<span id="totalPagado"></span></p>
+    <p>Gracias por tu compra. Se ha enviado un comprobante al administrador.</p>
+  </div>
+
+  <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
+    <input type="hidden" name="resumen" id="inputResumen">
+    <input type="hidden" name="total" id="inputTotal">
+  </form>
+
+  <div id="toast-container"></div>
+
+  <div style="margin-top: 30px; text-align: center;">
+    <div class="button-group">
+        <button onclick="copiarCVU()">Copiar CVU para pago</button>
+    </div>
+  </div>
+
+  <script>
+    let carrito = [];
+    let totalBruto = 0; // Total sin descuentos
+    let totalFinal = 0; // Total con descuentos aplicados
+    let descuentoAplicado = { tipo: null, valor: 0 }; // Para rastrear el descuento activo
+
+    // Estructura de productos para una mejor gestión y futuras expansiones
+    const productosDisponibles = {
+        'nike-mercurial': { nombre: 'Botines Nike Mercurial', precio: 120 },
+        'adidas-predator': { nombre: 'Botines Adidas Predator', precio: 140 },
+        'puma-future': { nombre: 'Botines Puma Future', precio: 110 },
+        'camiseta-arg': { nombre: 'Camiseta Argentina 2022', precio: 90 },
+        'camiseta-brasil': { nombre: 'Camiseta Brasil 2024', precio: 85 },
+        'camiseta-rm': { nombre: 'Camiseta Real Madrid 2024', precio: 100 }
+    };
+
+    // Códigos de descuento con tipos: 'porcentaje' o 'fijo'
+    const codigosDescuento = {
+        "YO2025": { tipo: 'fijo', valor: 50 }, // Descuento fijo de $50
+        "FUTBOL10": { tipo: 'porcentaje', valor: 10 }, // 10% de descuento
+        "CAMISETA20": { tipo: 'porcentaje', valor: 20 }, // 20% de descuento
+        "ENVIO100": { tipo: 'fijo', valor: 100 } // Descuento fijo de $100
+    };
+
+    const miCVU = "0000003100002113037276"; // ¡CAMBIA ESTO POR TU CVU REAL!
+
+    // --- Funciones de Utilidad ---
+
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10); // Pequeño retraso para que la transición funcione
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 3000);
+    }
+
+    function toggleMenu(id) {
+        const menu = document.getElementById(id);
+        if (menu.style.display === 'grid' || menu.style.display === '') {
+            menu.style.display = 'none';
+        } else {
+            menu.style.display = 'grid'; // Asegura que use grid para el layout
+        }
+    }
+
+
+    function agregarAlCarrito(nombre, precio, idProducto) {
+        const itemExistente = carrito.find(item => item.id === idProducto);
+
+        if (itemExistente) {
+            itemExistente.cantidad++;
+            itemExistente.subtotal = itemExistente.cantidad * itemExistente.precio;
+        } else {
+            carrito.push({ id: idProducto, nombre, precio, cantidad: 1, subtotal: precio });
+        }
+        actualizarCarrito();
+        showToast(`"${nombre}" añadido al carrito!`, 'success');
+    }
+
+    function eliminarDelCarrito(idProducto) {
+        const itemIndex = carrito.findIndex(item => item.id === idProducto);
+
+        if (itemIndex > -1) {
+            if (carrito[itemIndex].cantidad > 1) {
+                carrito[itemIndex].cantidad--;
+                carrito[itemIndex].subtotal = carrito[itemIndex].cantidad * carrito[itemIndex].precio;
+            } else {
+                carrito.splice(itemIndex, 1);
+            }
+            actualizarCarrito();
+            showToast('Producto eliminado del carrito.', 'info');
+        }
+    }
+
+    function actualizarCarrito() {
+        const lista = document.getElementById('listaCarrito');
+        lista.innerHTML = '';
+        totalBruto = 0;
+
+        carrito.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="item-details">
+                    ${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}
+                </div>
+                <div>
+                    <button onclick="eliminarDelCarrito('${item.id}')">X</button>
+                </div>
+            `;
+            lista.appendChild(li);
+            totalBruto += item.subtotal;
+        });
+
+        document.getElementById('total').textContent = totalBruto.toFixed(2);
+        // Recalcular totalFinal al actualizar el carrito
+        aplicarDescuento(true); // Se recalcula el descuento si ya había uno aplicado
+    }
+
+    function aplicarDescuento(recalcular = false) {
+        const codigoInput = document.getElementById('codigo');
+        const codigo = codigoInput.value.trim().toUpperCase();
+        const descuentoInfo = codigosDescuento[codigo];
+
+        let mensajeDescuento = '';
+        let tipoMensaje = 'info';
+
+        if (!recalcular) { // Solo si no es una llamada de "recalcular"
+            if (descuentoInfo) {
+                descuentoAplicado = { tipo: descuentoInfo.tipo, valor: descuentoInfo.valor, codigo: codigo };
+                mensajeDescuento = `Código "${codigo}" aplicado correctamente.`;
+                tipoMensaje = 'success';
+            } else if (codigo === "" && descuentoAplicado.codigo) {
+                // Si el campo está vacío y había un descuento, lo reseteamos
+                descuentoAplicado = { tipo: null, valor: 0 };
+                mensajeDescuento = 'Descuento reseteado.';
+                tipoMensaje = 'info';
+            } else {
+                descuentoAplicado = { tipo: null, valor: 0 }; // Resetea si el código es inválido
+                mensajeDescuento = 'Código de descuento inválido o no encontrado.';
+                tipoMensaje = 'error';
+            }
+            showToast(mensajeDescuento, tipoMensaje);
+        }
+
+        // Aplicar el descuento al totalBruto
+        let tempTotal = totalBruto;
+        if (descuentoAplicado.tipo === 'porcentaje') {
+            tempTotal = totalBruto - (totalBruto * descuentoAplicado.valor / 100);
+        } else if (descuentoAplicado.tipo === 'fijo') {
+            tempTotal = totalBruto - descuentoAplicado.valor;
+        }
+        totalFinal = Math.max(0, tempTotal); // Asegura que el total no sea negativo
+
+        document.getElementById('totalDescuento').textContent = totalFinal.toFixed(2);
+    }
+
+    function finalizarCompra() {
+        if (carrito.length === 0) {
+            showToast('El carrito está vacío. Agrega productos para finalizar la compra.', 'error');
+            return;
+        }
+
+        const resumen = document.getElementById('resumenCompra');
+        resumen.innerHTML = '';
+        let resumenTexto = '';
+
+        carrito.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}`;
+            resumen.appendChild(li);
+            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}; `;
+        });
+
+        document.getElementById('totalPagado').textContent = totalFinal.toFixed(2);
+        document.getElementById('comprobante').style.display = 'block';
+
+        // Rellenar y enviar formulario a Formspree
+        document.getElementById('inputResumen').value = resumenTexto.trim();
+        document.getElementById('inputTotal').value = totalFinal.toFixed(2);
+        document.getElementById('formularioCompra').submit();
+
+        // Limpiar carrito después de enviar
+        carrito = [];
+        descuentoAplicado = { tipo: null, valor: 0 }; // Reiniciar el descuento
+        document.getElementById('codigo').value = ''; // Limpiar el input de código
+        actualizarCarrito(); // Limpiar la vista del carrito
+        showToast('¡Compra finalizada con éxito! Gracias por tu compra.', 'success');
+    }
+
+    function copiarCVU() {
+        navigator.clipboard.writeText(miCVU).then(() => {
+            showToast('CVU copiado al portapapeles ✅', 'success');
+        }).catch(err => {
+            showToast('No se pudo copiar el CVU. Por favor, cópialo manualmente.', 'error');
+        });
+    }
+
+    // Inicializar el carrito al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarCarrito();
+    });
+  </script>
+</body>
 </html>
