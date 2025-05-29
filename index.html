@@ -562,7 +562,7 @@
     <p>Gracias por tu compra. Se ha enviado un comprobante al administrador.</p>
   </div>
 
-  <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
+  <form id="formularioCompra" action="https://formspree.io/f/mwpogygp" method="POST" style="display:none;">
     <input type="hidden" name="id_pedido" id="inputIdPedido"> <input type="hidden" name="resumen_pedido" id="inputResumen">
     <input type="hidden" name="total_final_pedido" id="inputTotal">
     <input type="hidden" name="nombre_cliente" id="inputNombreCliente"> <input type="hidden" name="instagram_cliente" id="inputInstagramCliente"> </form>
@@ -815,8 +815,10 @@
         registroSimuladoDiv.style.display = 'none';
         seccionInstagram.style.display = 'block';
 
-        // Habilitar el botón de finalizar compra
-        btnFinalizar.disabled = false;
+        // Habilitar el botón de finalizar compra si ya hay productos en el carrito
+        if (carrito.length > 0) {
+            btnFinalizar.disabled = false;
+        }
     }
 
 
@@ -864,20 +866,21 @@
             const li = document.createElement('li');
             li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toLocaleString('es-AR')}`;
             resumen.appendChild(li);
-            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toLocaleString('es-AR')}\n`;
+            // Formatear para el mensaje de Instagram con guiones
+            resumenTexto += `- ${item.nombre} (x${item.cantidad}) - $${item.subtotal.toLocaleString('es-AR')}\n`;
         });
 
         aplicarDescuento(true);
         document.getElementById('totalPagado').textContent = totalFinal.toLocaleString('es-AR');
         document.getElementById('idPedidoComprobante').textContent = idPedido;
 
-        // 1. Preparar el nuevo mensaje para Instagram DM y Copiado
-        let instagramMessage = `¡Hola ${nombreClienteRegistrado}! 😊 ¡Gracias por tu compra en ${nombreTienda}!\n\n`;
-        instagramMessage += `Tu pedido con ID #${idPedido} ya fue registrado.\n\n`;
-        instagramMessage += `Aquí el resumen:\n${resumenTexto}\n`;
-        instagramMessage += `Total Final: $${totalFinal.toLocaleString('es-AR')}\n\n`;
-        instagramMessage += `Nos contactaremos contigo por Instagram DM desde ${instagramTiendaUsername} en breve a tu usuario ${instagramCliente} para coordinar el pago y el envío. ¡Estate atento/a!\n\n`;
-        instagramMessage += `¡Saludos!`;
+        // 1. Preparar el NUEVO mensaje para Instagram DM y Copiado (Desde la perspectiva del COMPRADOR)
+        let instagramMessage = `¡Hola ${instagramTiendaUsername}! 👋 Acabo de realizar una compra en ${nombreTienda}.\n\n`;
+        instagramMessage += `Mi nombre es ${nombreClienteRegistrado} y mi usuario de Instagram es ${instagramCliente}.\n\n`;
+        instagramMessage += `El ID de mi pedido es: #${idPedido}\n\n`;
+        instagramMessage += `Resumen de la compra:\n${resumenTexto}\n`;
+        instagramMessage += `El total final es: $${totalFinal.toLocaleString('es-AR')}\n\n`;
+        instagramMessage += `¡Espero tu mensaje para coordinar el pago y el envío!`;
 
 
         const instagramURL = `https://ig.me/m/${instagramTiendaUsername.replace('@', '')}`; // Asegurarse de quitar el @ para la URL
@@ -892,10 +895,10 @@
 
         // Copiar el mensaje a Instagram automáticamente (antes de la redirección de Formspree)
         navigator.clipboard.writeText(instagramMessage).then(() => {
-            showToast('¡Mensaje del pedido copiado! Pégalo en Instagram si lo deseas. Nos contactaremos pronto. ✅', 'success', 5000);
+            showToast('¡Mensaje del pedido copiado! Pégalo en Instagram para confirmar tu compra. Te contactaremos pronto. ✅', 'success', 5000);
         }).catch(err => {
             console.error('Error al copiar el mensaje a Instagram:', err);
-            showToast('No se pudo copiar el mensaje automáticamente. Por favor, revisa tus DMs de Instagram, te contactaremos allí.', 'error', 7000);
+            showToast('No se pudo copiar el mensaje automáticamente. Por favor, haz una captura de pantalla del comprobante y contáctanos por Instagram DM.', 'error', 7000); // Mensaje alternativo
         });
 
         // Redirigir a Instagram en una nueva pestaña (para que el usuario lo tenga listo)
