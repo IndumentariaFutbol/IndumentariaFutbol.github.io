@@ -453,16 +453,16 @@
 
   <div id="comprobante" style="display: none;">
     <h2>Comprobante de Compra</h2>
+    <p><strong>ID de Pedido:</strong> <span id="idPedidoComprobante"></span></p>
     <ul id="resumenCompra"></ul>
     <p><strong>Total Pagado:</strong> $<span id="totalPagado"></span></p>
     <p>Gracias por tu compra. Se ha enviado un comprobante al administrador.</p>
   </div>
 
   <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
-    <input type="hidden" name="resumen_pedido" id="inputResumen">
+    <input type="hidden" name="id_pedido" id="inputIdPedido"> <input type="hidden" name="resumen_pedido" id="inputResumen">
     <input type="hidden" name="total_final_pedido" id="inputTotal">
-    <input type="text" name="_replyto" placeholder="Tu email (opcional)">
-  </form>
+    </form>
 
   <div id="toast-container"></div>
 
@@ -529,7 +529,6 @@
             menu.style.display = 'grid'; // Asegura que use grid para el layout
         }
     }
-
 
     function agregarAlCarrito(nombre, precio, idProducto) {
         const itemExistente = carrito.find(item => item.id === idProducto);
@@ -628,11 +627,29 @@
         document.getElementById('totalDescuento').textContent = totalFinal.toFixed(2);
     }
 
+    // Función para generar un ID de pedido único
+    function generarIdPedido() {
+        const now = new Date();
+        // Formato: YYYYMMDD-HHMMSS-RANDOM
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses son 0-11
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const random = Math.floor(Math.random() * 9000) + 1000; // Número aleatorio de 4 dígitos
+
+        return `PEDIDO-${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
+    }
+
+
     function finalizarCompra() {
         if (carrito.length === 0) {
             showToast('El carrito está vacío. Agrega productos para finalizar la compra.', 'error');
             return;
         }
+
+        const idPedido = generarIdPedido(); // Genera el ID único del pedido
 
         const resumen = document.getElementById('resumenCompra');
         resumen.innerHTML = '';
@@ -648,11 +665,14 @@
         // Aseguramos que el totalPagado se calcule correctamente
         aplicarDescuento(true); // Recalcula por si acaso
         document.getElementById('totalPagado').textContent = totalFinal.toFixed(2);
+        document.getElementById('idPedidoComprobante').textContent = idPedido; // Muestra el ID en el comprobante
+
 
         // --- PREPARAR MENSAJES Y ACCIONES ---
 
         // 1. Preparar mensaje para Instagram DM y Copiado
         let instagramMessage = `¡Hola! He realizado una compra en tu tienda de Indumentaria de Fútbol.\n\n`;
+        instagramMessage += `ID del Pedido: ${idPedido}\n\n`; // Agrega el ID al mensaje de Instagram
         instagramMessage += resumenTexto; // Agrega los detalles del carrito
         instagramMessage += `\nTotal a pagar: $${totalFinal.toFixed(2)}\n`;
         instagramMessage += `\nMi nombre es [Tu Nombre] y mi Instagram es @[Tu Instagram] para coordinar el pago y envío.`; // Invita al usuario a poner su nombre y IG
@@ -662,53 +682,13 @@
         const instagramURL = `https://ig.me/m/${instagramUsername}`; // Solo abrir el chat
 
 
-        // 2. Preparar mensaje para Formspree (Gmail respaldo)
-        const formspreeTotal = totalFinal.toFixed(2);
-        const formspreeResumen = `Pedido en IndumentariaFutbol.github.io:\n\n${resumenTexto}\nTotal final: $${formspreeTotal}`;
+        // 2. Enviar a Formspree (comprobante por Gmail)
+        const formularioCompra = document.getElementById('formularioCompra');
+        document.getElementById('inputIdPedido').value = idPedido; // Establece el ID del pedido
+        document.getElementById('inputResumen').value = `Pedido en IndumentariaFutbol.github.io:\n\nID del Pedido: ${idPedido}\n\n${resumenTexto}\nTotal final: $${totalFinal.toFixed(2)}`;
+        document.getElementById('inputTotal').value = totalFinal.toFixed(2);
 
-        // Datos para enviar a Formspree
-        const formData = new FormData();
-        formData.append('resumen_pedido', formspreeResumen.trim());
-        formData.append('total_final_pedido', formspreeTotal);
-        // Puedes añadir aquí otros campos del formulario que quieras enviar
-        // formData.append('_replyto', document.getElementById('email_cliente_input').value); // Si tuvieras un input para el email del cliente
-
-        // Enviar a Formspree usando fetch (asíncrono y en segundo plano)
-        // Ya no hay necesidad de un .then() o .catch() que muestre un toast,
-        // ya que la funcionalidad principal de cara al usuario es la redirección a Instagram.
-        // El envío de email es un respaldo silencioso.
-        // **¡IMPORTANTE! Asegúrate que esta URL sea tu endpoint de Formspree real**
-        fetch('https://formspree.io/f/manorawy', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json' // Crucial para evitar la redirección de Formspree
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.error('Error al enviar formulario a Formspree:', response.statusText);
-            } else {
-                console.log('Formulario enviado a Formspree con éxito (en segundo plano).');
-            }
-        })
-        .catch(error => {
-            console.error('Error de red al enviar formulario a Formspree:', error);
-        });
-
-
-        // --- ACCIONES POST-COMPRA (PARA EL USUARIO) ---
-
-        // Mostrar comprobante en la página
-        document.getElementById('comprobante').style.display = 'block';
-
-        // Limpiar carrito
-        carrito = [];
-        descuentoAplicado = { tipo: null, valor: 0, codigo: null };
-        document.getElementById('codigo').value = '';
-        actualizarCarrito(); // Limpiar la vista del carrito
-
-        // Copiar el mensaje a Instagram automáticamente
+        // --- Copiar el mensaje a Instagram automáticamente (antes de la redirección de Formspree) ---
         navigator.clipboard.writeText(instagramMessage).then(() => {
             showToast('¡Mensaje del pedido copiado! Pégalo en Instagram ✅ Redirigiendo...', 'success', 5000); // Muestra por 5 segundos
         }).catch(err => {
@@ -716,12 +696,25 @@
             showToast('No se pudo copiar el mensaje automáticamente. Abre Instagram y coordina manualmente.', 'error', 7000); // Muestra por 7 segundos
         });
 
-
-        // Redirigir a Instagram en una nueva pestaña
+        // Redirigir a Instagram en una nueva pestaña (para que el usuario lo tenga listo)
+        // Esto se ejecuta ANTES del submit del formulario, que redirigirá la pestaña actual.
         // Damos un tiempo para que el usuario lea el toast y el copiado se realice
         setTimeout(() => {
             window.open(instagramURL, '_blank'); // Abre Instagram en una nueva pestaña
         }, 2000); // Redirige después de 2 segundos
+
+        // Mostrar comprobante en la página (antes de que la página se redirija)
+        document.getElementById('comprobante').style.display = 'block';
+
+        // Limpiar carrito (también antes de la redirección)
+        carrito = [];
+        descuentoAplicado = { tipo: null, valor: 0, codigo: null };
+        document.getElementById('codigo').value = '';
+        actualizarCarrito(); // Limpiar la vista del carrito
+
+        // Finalmente, envía el formulario a Formspree, lo que causará la redirección de la PÁGINA ACTUAL
+        // (esto es el comportamiento que quieres para asegurar el envío de email).
+        formularioCompra.submit();
     }
 
     function copiarCVU() {
