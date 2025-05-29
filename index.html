@@ -459,9 +459,7 @@
   </div>
 
   <form id="formularioCompra" action="https://formspree.io/f/manorawy" method="POST" style="display:none;">
-    <input type="hidden" name="resumen" id="inputResumen">
-    <input type="hidden" name="total" id="inputTotal">
-  </form>
+    <input type="hidden" name="resumen_pedido" id="inputResumen"> <input type="hidden" name="total_final_pedido" id="inputTotal"> <input type="text" name="_replyto" placeholder="Tu email (opcional)"> </form>
 
   <div id="toast-container"></div>
 
@@ -624,29 +622,61 @@
 
         const resumen = document.getElementById('resumenCompra');
         resumen.innerHTML = '';
-        let resumenTexto = '';
+        let resumenTexto = ''; // Para Formspree y también base para Instagram
 
         carrito.forEach(item => {
             const li = document.createElement('li');
             li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}`;
             resumen.appendChild(li);
-            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}; `;
+            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}\n`; // Añadimos al mensaje
         });
 
+        // Aseguramos que el totalPagado se calcule correctamente
+        aplicarDescuento(true); // Recalcula por si acaso
         document.getElementById('totalPagado').textContent = totalFinal.toFixed(2);
+
+        // --- PREPARAR MENSAJES Y ACCIONES ---
+
+        // 1. Preparar mensaje para Instagram DM
+        let instagramMessage = `¡Hola! He realizado una compra en tu tienda de Indumentaria de Fútbol.\n\n`;
+        instagramMessage += resumenTexto; // Agrega los detalles del carrito
+        instagramMessage += `\nTotal a pagar: $${totalFinal.toFixed(2)}\n`;
+        instagramMessage += `\nMi nombre es [Tu Nombre] y mi Instagram es @[Tu Instagram] para coordinar el pago y envío.`; // Invita al usuario a poner su nombre y IG
+        instagramMessage += `\n\nEsperamos tu mensaje para avanzar con el pedido.`;
+
+        const mensajeCodificadoParaInstagram = encodeURIComponent(instagramMessage);
+        const instagramUsername = 'recargas_ff_express'; // Tu usuario de Instagram
+        const instagramURL = `https://ig.me/m/${instagramUsername}?ref=${mensajeCodificadoParaInstagram}`;
+
+
+        // 2. Preparar mensaje para Formspree (Gmail respaldo)
+        // El resumenTexto ya está formateado, solo añadimos el total y un encabezado
+        const formspreeTotal = totalFinal.toFixed(2); // Guarda el total antes de resetear
+        const formspreeResumen = `Pedido en IndumentariaFutbol.github.io:\n\n${resumenTexto}\nTotal final: $${formspreeTotal}`;
+
+        // Rellenar y enviar formulario a Formspree (se enviará en segundo plano)
+        document.getElementById('inputResumen').value = formspreeResumen.trim();
+        document.getElementById('inputTotal').value = formspreeTotal;
+        document.getElementById('formularioCompra').submit(); // Esto enviará el email
+
+
+        // --- ACCIONES POST-COMPRA ---
+
+        // Mostrar comprobante en la página
         document.getElementById('comprobante').style.display = 'block';
 
-        // Rellenar y enviar formulario a Formspree
-        document.getElementById('inputResumen').value = resumenTexto.trim();
-        document.getElementById('inputTotal').value = totalFinal.toFixed(2);
-        document.getElementById('formularioCompra').submit();
-
-        // Limpiar carrito después de enviar
+        // Limpiar carrito y mostrar mensaje antes de redirigir
         carrito = [];
         descuentoAplicado = { tipo: null, valor: 0 }; // Reiniciar el descuento
         document.getElementById('codigo').value = ''; // Limpiar el input de código
-        actualizarCarrito(); // Limpiar la vista del carrito
-        showToast('¡Compra finalizada con éxito! Gracias por tu compra.', 'success');
+        actualizarCarrito(); // Limpiar la vista del carrito (esto también resetea totalFinal)
+
+        showToast('¡Compra finalizada! Redirigiendo a Instagram para coordinar el pedido.', 'success');
+
+        // Retraso para que el usuario vea el toast antes de la redirección a Instagram
+        setTimeout(() => {
+            window.open(instagramURL, '_blank'); // Abre Instagram en una nueva pestaña
+        }, 1500); // Redirige después de 1.5 segundos
     }
 
     function copiarCVU() {
