@@ -97,6 +97,21 @@
       border-bottom: 2px solid #e0e0e0; /* Línea divisoria más clara */
       padding-bottom: 10px;
       font-weight: 600;
+      cursor: pointer; /* Indica que es clicable */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .categoria h2::after {
+      content: '▼'; /* Flecha hacia abajo para indicar cerrado */
+      font-size: 0.8em;
+      transition: transform 0.3s ease;
+    }
+
+    .categoria.open h2::after {
+      content: '▲'; /* Flecha hacia arriba para indicar abierto */
+      transform: rotate(180deg);
     }
 
     .productos {
@@ -106,6 +121,15 @@
       margin-top: 20px;
       padding-top: 20px;
       border-top: 1px dashed #e0e0e0; /* Línea punteada sutil */
+      /* Propiedades para colapsar/expandir */
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease-out; /* Transición suave */
+    }
+
+    .categoria.open .productos {
+      max-height: 2000px; /* Suficientemente grande para contener los productos */
+      transition: max-height 0.7s ease-in; /* Transición de apertura */
     }
 
     .producto {
@@ -141,7 +165,7 @@
       flex-direction: column;
       gap: 10px; /* Espacio entre el span y el botón */
       justify-content: center; /* Centra verticalmente */
-      align-items: center; /* Centra horizontalmente */
+      align-items: center;
     }
 
     .producto-info span {
@@ -379,59 +403,87 @@
 <body>
   <h1>Tienda de Fútbol</h1>
 
-  <div class="categoria" onclick="toggleMenu('botines')">
-    <h2>Botines</h2>
-    <div class="productos" id="botines">
+  <div class="categoria" id="categoria-botines">
+    <h2 onclick="toggleCategoria('categoria-botines')">Botines</h2>
+    <div class="productos" id="productos-botines">
       <div class="producto">
         <img src="https://i0.wp.com/www.sitemarca.com/wp-content/uploads/2019/07/Nike-Mercurial-360-2019-8.jpg" alt="Nike Mercurial">
         <div class="producto-info">
-          <span>Botines Nike Mercurial - $120</span>
-          <button onclick="agregarAlCarrito('Botines Nike Mercurial', 120, 'nike-mercurial')">Agregar</button>
+          <span>Botines Nike Mercurial - $110.000</span>
+          <button onclick="agregarAlCarrito('Botines Nike Mercurial', 110000, 'nike-mercurial')">Agregar</button>
         </div>
       </div>
       <div class="producto">
         <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/6bf310c6ec0449c2b38c612751070302_9366/Botines_Predator_Elite_Terreno_Firme_Verde_IG8771_HM1.jpg" alt="Adidas Predator">
         <div class="producto-info">
-          <span>Botines Adidas Predator - $140</span>
-          <button onclick="agregarAlCarrito('Botines Adidas Predator', 140, 'adidas-predator')">Agregar</button>
+          <span>Botines Adidas Predator - $125.000</span>
+          <button onclick="agregarAlCarrito('Botines Adidas Predator', 125000, 'adidas-predator')">Agregar</button>
         </div>
       </div>
       <div class="producto">
         <img src="https://brunch.com.ar/wp-content/uploads/2021/04/IMG_7435-scaled.jpg" alt="Puma Future">
         <div class="producto-info">
-          <span>Botines Puma Future - $110</span>
-          <button onclick="agregarAlCarrito('Botines Puma Future', 110, 'puma-future')">Agregar</button>
+          <span>Botines Puma Future - $95.000</span>
+          <button onclick="agregarAlCarrito('Botines Puma Future', 95000, 'puma-future')">Agregar</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="categoria" onclick="toggleMenu('camisetas')">
-    <h2>Camisetas</h2>
-    <div class="productos" id="camisetas">
+  <div class="categoria" id="categoria-camisetas">
+    <h2 onclick="toggleCategoria('categoria-camisetas')">Camisetas</h2>
+    <div class="productos" id="productos-camisetas">
       <div class="producto">
         <img src="https://acdn-us.mitiendanube.com/stores/001/106/550/products/arg1-8c236e7773ecab0d2916638527231867-640-0.jpg" alt="Camiseta Argentina">
         <div class="producto-info">
-          <span>Camiseta Argentina 2022 - $90</span>
-          <button onclick="agregarAlCarrito('Camiseta Argentina 2022', 90, 'camiseta-arg')">Agregar</button>
+          <span>Camiseta Argentina 2022 - $65.000</span>
+          <button onclick="agregarAlCarrito('Camiseta Argentina 2022', 65000, 'camiseta-arg')">Agregar</button>
         </div>
       </div>
       <div class="producto">
         <img src="https://acdn-us.mitiendanube.com/stores/001/312/744/products/brasil-photoroom-a3a484bc3d2b5d7e0617252271407052-480-0.jpg" alt="Camiseta Brasil">
         <div class="producto-info">
-          <span>Camiseta Brasil 2024 - $85</span>
-          <button onclick="agregarAlCarrito('Camiseta Brasil 2024', 85, 'camiseta-brasil')">Agregar</button>
+          <span>Camiseta Brasil 2024 - $60.000</span>
+          <button onclick="agregarAlCarrito('Camiseta Brasil 2024', 60000, 'camiseta-brasil')">Agregar</button>
         </div>
       </div>
       <div class="producto">
         <img src="https://acdn-us.mitiendanube.com/stores/006/105/140/products/3179c1e6-f624616f187c28128e17171953608769-1024-1024.jpg" alt="Camiseta Real Madrid">
         <div class="producto-info">
-          <span>Camiseta Real Madrid 2024 - $100</span>
-          <button onclick="agregarAlCarrito('Camiseta Real Madrid 2024', 100, 'camiseta-rm')">Agregar</button>
+          <span>Camiseta Real Madrid 2024 - $70.000</span>
+          <button onclick="agregarAlCarrito('Camiseta Real Madrid 2024', 70000, 'camiseta-rm')">Agregar</button>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="categoria" id="categoria-pelotas">
+    <h2 onclick="toggleCategoria('categoria-pelotas')">Pelotas</h2>
+    <div class="productos" id="productos-pelotas">
+      <div class="producto">
+        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/25447a2fbfa045e39665af3800f13511_9366/Pelota_Oceaunz_Club_Blanco_H57805_01_standard.jpg" alt="Pelota Adidas Training">
+        <div class="producto-info">
+          <span>Pelota Adidas Training - $30.000</span>
+          <button onclick="agregarAlCarrito('Pelota Adidas Training', 30000, 'pelota-adidas-training')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fc233e7589d84c6ea40aaf720087a324_9366/Pelota_de_Futbol_N%C2%B05_Rojo_HT2487_01_standard.jpg" alt="Pelota Adidas World Cup">
+        <div class="producto-info">
+          <span>Pelota Adidas World Cup - $40.000</span>
+          <button onclick="agregarAlCarrito('Pelota Adidas World Cup', 40000, 'pelota-adidas-worldcup')">Agregar</button>
+        </div>
+      </div>
+      <div class="producto">
+        <img src="https://tienda.umbro.com.ar/media/catalog/product/cache/cf274d8520268e31ef407671175657b9/u/m/umbro_pelota-f_tbol_force-tango_rojo_frente.jpg" alt="Pelota Umbro Force">
+        <div class="producto-info">
+          <span>Pelota Umbro Force - $25.000</span>
+          <button onclick="agregarAlCarrito('Pelota Umbro Force', 25000, 'pelota-umbro-force')">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div id="carrito">
     <h2>Carrito de Compras</h2>
@@ -477,15 +529,19 @@
     let totalBruto = 0; // Total sin descuentos
     let totalFinal = 0; // Total con descuentos aplicados
     let descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Para rastrear el descuento activo
+    let openCategoryId = null; // Para controlar qué categoría está abierta
 
     // Estructura de productos para una mejor gestión y futuras expansiones
     const productosDisponibles = {
-        'nike-mercurial': { nombre: 'Botines Nike Mercurial', precio: 120 },
-        'adidas-predator': { nombre: 'Botines Adidas Predator', precio: 140 },
-        'puma-future': { nombre: 'Botines Puma Future', precio: 110 },
-        'camiseta-arg': { nombre: 'Camiseta Argentina 2022', precio: 90 },
-        'camiseta-brasil': { nombre: 'Camiseta Brasil 2024', precio: 85 },
-        'camiseta-rm': { nombre: 'Camiseta Real Madrid 2024', precio: 100 }
+        'nike-mercurial': { nombre: 'Botines Nike Mercurial', precio: 110000 },
+        'adidas-predator': { nombre: 'Botines Adidas Predator', precio: 125000 },
+        'puma-future': { nombre: 'Botines Puma Future', precio: 95000 },
+        'camiseta-arg': { nombre: 'Camiseta Argentina 2022', precio: 65000 },
+        'camiseta-brasil': { nombre: 'Camiseta Brasil 2024', precio: 60000 },
+        'camiseta-rm': { nombre: 'Camiseta Real Madrid 2024', precio: 70000 },
+        'pelota-adidas-training': { nombre: 'Pelota Adidas Training', precio: 30000 },
+        'pelota-adidas-worldcup': { nombre: 'Pelota Adidas World Cup', precio: 40000 },
+        'pelota-umbro-force': { nombre: 'Pelota Umbro Force', precio: 25000 }
     };
 
     // Códigos de descuento con tipos: 'porcentaje' o 'fijo'
@@ -495,7 +551,7 @@
 
         // --- CÓDIGOS NORMALES PARA CLIENTES ---
         "PRIMERACOMPRA": { tipo: 'porcentaje', valor: 15 }, // 15% de descuento en la primera compra
-        "GANAGOL": { tipo: 'fijo', valor: 20 }, // Descuento fijo de $20
+        "GANAGOL": { tipo: 'fijo', valor: 20000 }, // Descuento fijo de $20.000
         "OFERTA25": { tipo: 'porcentaje', valor: 25 }, // 25% de descuento
         "AMIGOS10": { tipo: 'porcentaje', valor: 10 } // 10% de descuento
     };
@@ -504,7 +560,7 @@
 
     // --- Funciones de Utilidad ---
 
-    function showToast(message, type = 'info', duration = 3000) { // Añadido 'duration' parámetro
+    function showToast(message, type = 'info', duration = 3000) {
         const toastContainer = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
@@ -513,20 +569,30 @@
 
         setTimeout(() => {
             toast.classList.add('show');
-        }, 10); // Pequeño retraso para que la transición funcione
+        }, 10);
 
         setTimeout(() => {
             toast.classList.remove('show');
             toast.addEventListener('transitionend', () => toast.remove());
-        }, duration); // Usa la duración definida
+        }, duration);
     }
 
-    function toggleMenu(id) {
-        const menu = document.getElementById(id);
-        if (menu.style.display === 'grid' || menu.style.display === '') {
-            menu.style.display = 'none';
+    // Nueva función para el manejo de categorías colapsables
+    function toggleCategoria(categoryId) {
+        const targetCategory = document.getElementById(categoryId);
+
+        if (targetCategory.classList.contains('open')) {
+            // Si la categoría ya está abierta, la cerramos
+            targetCategory.classList.remove('open');
+            openCategoryId = null;
         } else {
-            menu.style.display = 'grid'; // Asegura que use grid para el layout
+            // Si hay otra categoría abierta, la cerramos primero
+            if (openCategoryId && openCategoryId !== categoryId) {
+                document.getElementById(openCategoryId).classList.remove('open');
+            }
+            // Abrimos la categoría clicada
+            targetCategory.classList.add('open');
+            openCategoryId = categoryId;
         }
     }
 
@@ -567,7 +633,7 @@
             const li = document.createElement('li');
             li.innerHTML = `
                 <div class="item-details">
-                    ${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}
+                    ${item.nombre} (x${item.cantidad}) - $${item.subtotal.toLocaleString('es-AR')}
                 </div>
                 <div>
                     <button onclick="eliminarDelCarrito('${item.id}')">X</button>
@@ -577,9 +643,8 @@
             totalBruto += item.subtotal;
         });
 
-        document.getElementById('total').textContent = totalBruto.toFixed(2);
-        // Recalcular totalFinal al actualizar el carrito
-        aplicarDescuento(true); // Se recalcula el descuento si ya había uno aplicado
+        document.getElementById('total').textContent = totalBruto.toLocaleString('es-AR');
+        aplicarDescuento(true); // Recalcular totalFinal al actualizar el carrito
     }
 
     function aplicarDescuento(recalcular = false) {
@@ -590,7 +655,6 @@
         let mensajeDescuento = '';
         let tipoMensaje = 'info';
 
-        // Solo si no es una llamada de "recalcular" desde actualizarCarrito()
         if (!recalcular) {
             if (descuentoInfo) {
                 descuentoAplicado = { tipo: descuentoInfo.tipo, valor: descuentoInfo.valor, codigo: codigo };
@@ -601,47 +665,43 @@
                 }
                 tipoMensaje = 'success';
             } else if (codigo === "" && descuentoAplicado.codigo) {
-                // Si el campo está vacío y había un descuento, lo reseteamos
-                descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Resetear también el código
+                descuentoAplicado = { tipo: null, valor: 0, codigo: null };
                 mensajeDescuento = 'Descuento reseteado.';
                 tipoMensaje = 'info';
             } else {
-                descuentoAplicado = { tipo: null, valor: 0, codigo: null }; // Resetea si el código es inválido
+                descuentoAplicado = { tipo: null, valor: 0, codigo: null };
                 mensajeDescuento = 'Código de descuento inválido o no encontrado.';
                 tipoMensaje = 'error';
             }
             showToast(mensajeDescuento, tipoMensaje);
         }
 
-        // Aplicar el descuento al totalBruto
         let tempTotal = totalBruto;
         if (descuentoAplicado.tipo === 'porcentaje') {
             tempTotal = totalBruto - (totalBruto * descuentoAplicado.valor / 100);
         } else if (descuentoAplicado.tipo === 'fijo') {
             tempTotal = totalBruto - descuentoAplicado.valor;
         } else if (descuentoAplicado.tipo === 'especial_gratis') {
-            tempTotal = 0; // Para el código especial, el total es 0
+            tempTotal = 0;
         }
-        totalFinal = Math.max(0, tempTotal); // Asegura que el total no sea negativo
+        totalFinal = Math.max(0, tempTotal);
 
-        document.getElementById('totalDescuento').textContent = totalFinal.toFixed(2);
+        document.getElementById('totalDescuento').textContent = totalFinal.toLocaleString('es-AR');
     }
 
     // Función para generar un ID de pedido único
     function generarIdPedido() {
         const now = new Date();
-        // Formato: YYYYMMDD-HHMMSS-RANDOM
         const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses son 0-11
+        const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
-        const random = Math.floor(Math.random() * 9000) + 1000; // Número aleatorio de 4 dígitos
+        const random = Math.floor(Math.random() * 9000) + 1000;
 
         return `PEDIDO-${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
     }
-
 
     function finalizarCompra() {
         if (carrito.length === 0) {
@@ -649,59 +709,52 @@
             return;
         }
 
-        const idPedido = generarIdPedido(); // Genera el ID único del pedido
+        const idPedido = generarIdPedido();
 
         const resumen = document.getElementById('resumenCompra');
         resumen.innerHTML = '';
-        let resumenTexto = ''; // Para Formspree y también base para Instagram
+        let resumenTexto = '';
 
         carrito.forEach(item => {
             const li = document.createElement('li');
-            li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}`;
+            li.textContent = `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toLocaleString('es-AR')}`;
             resumen.appendChild(li);
-            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toFixed(2)}\n`; // Añadimos al mensaje
+            resumenTexto += `${item.nombre} (x${item.cantidad}) - $${item.subtotal.toLocaleString('es-AR')}\n`;
         });
 
-        // Aseguramos que el totalPagado se calcule correctamente
-        aplicarDescuento(true); // Recalcula por si acaso
-        document.getElementById('totalPagado').textContent = totalFinal.toFixed(2);
-        document.getElementById('idPedidoComprobante').textContent = idPedido; // Muestra el ID en el comprobante
-
-
-        // --- PREPARAR MENSAJES Y ACCIONES ---
+        aplicarDescuento(true);
+        document.getElementById('totalPagado').textContent = totalFinal.toLocaleString('es-AR');
+        document.getElementById('idPedidoComprobante').textContent = idPedido;
 
         // 1. Preparar mensaje para Instagram DM y Copiado
         let instagramMessage = `¡Hola! He realizado una compra en tu tienda de Indumentaria de Fútbol.\n\n`;
-        instagramMessage += `ID del Pedido: ${idPedido}\n\n`; // Agrega el ID al mensaje de Instagram
-        instagramMessage += resumenTexto; // Agrega los detalles del carrito
-        instagramMessage += `\nTotal a pagar: $${totalFinal.toFixed(2)}\n`;
-        instagramMessage += `\nMi nombre es [Tu Nombre] y mi Instagram es @[Tu Instagram] para coordinar el pago y envío.`; // Invita al usuario a poner su nombre y IG
+        instagramMessage += `ID del Pedido: ${idPedido}\n\n`;
+        instagramMessage += resumenTexto;
+        instagramMessage += `\nTotal a pagar: $${totalFinal.toLocaleString('es-AR')}\n`;
+        instagramMessage += `\nMi nombre es [Tu Nombre] y mi Instagram es @[Tu Instagram] para coordinar el pago y envío.`;
         instagramMessage += `\n\nEsperamos tu mensaje para avanzar con el pedido.`;
 
         const instagramUsername = 'recargas_ff_express'; // Tu usuario de Instagram
-        const instagramURL = `https://ig.me/m/${instagramUsername}`; // Solo abrir el chat
-
+        const instagramURL = `https://ig.me/m/${instagramUsername}`;
 
         // 2. Enviar a Formspree (comprobante por Gmail)
         const formularioCompra = document.getElementById('formularioCompra');
-        document.getElementById('inputIdPedido').value = idPedido; // Establece el ID del pedido
-        document.getElementById('inputResumen').value = `Pedido en IndumentariaFutbol.github.io:\n\nID del Pedido: ${idPedido}\n\n${resumenTexto}\nTotal final: $${totalFinal.toFixed(2)}`;
-        document.getElementById('inputTotal').value = totalFinal.toFixed(2);
+        document.getElementById('inputIdPedido').value = idPedido;
+        document.getElementById('inputResumen').value = `Pedido en IndumentariaFutbol.github.io:\n\nID del Pedido: ${idPedido}\n\n${resumenTexto}\nTotal final: $${totalFinal.toLocaleString('es-AR')}`;
+        document.getElementById('inputTotal').value = totalFinal.toLocaleString('es-AR');
 
-        // --- Copiar el mensaje a Instagram automáticamente (antes de la redirección de Formspree) ---
+        // Copiar el mensaje a Instagram automáticamente (antes de la redirección de Formspree)
         navigator.clipboard.writeText(instagramMessage).then(() => {
-            showToast('¡Mensaje del pedido copiado! Pégalo en Instagram ✅ Redirigiendo...', 'success', 5000); // Muestra por 5 segundos
+            showToast('¡Mensaje del pedido copiado! Pégalo en Instagram ✅ Redirigiendo...', 'success', 5000);
         }).catch(err => {
             console.error('Error al copiar el mensaje a Instagram:', err);
-            showToast('No se pudo copiar el mensaje automáticamente. Abre Instagram y coordina manualmente.', 'error', 7000); // Muestra por 7 segundos
+            showToast('No se pudo copiar el mensaje automáticamente. Abre Instagram y coordina manualmente.', 'error', 7000);
         });
 
         // Redirigir a Instagram en una nueva pestaña (para que el usuario lo tenga listo)
-        // Esto se ejecuta ANTES del submit del formulario, que redirigirá la pestaña actual.
-        // Damos un tiempo para que el usuario lea el toast y el copiado se realice
         setTimeout(() => {
-            window.open(instagramURL, '_blank'); // Abre Instagram en una nueva pestaña
-        }, 2000); // Redirige después de 2 segundos
+            window.open(instagramURL, '_blank');
+        }, 2000);
 
         // Mostrar comprobante en la página (antes de que la página se redirija)
         document.getElementById('comprobante').style.display = 'block';
@@ -710,10 +763,9 @@
         carrito = [];
         descuentoAplicado = { tipo: null, valor: 0, codigo: null };
         document.getElementById('codigo').value = '';
-        actualizarCarrito(); // Limpiar la vista del carrito
+        actualizarCarrito();
 
         // Finalmente, envía el formulario a Formspree, lo que causará la redirección de la PÁGINA ACTUAL
-        // (esto es el comportamiento que quieres para asegurar el envío de email).
         formularioCompra.submit();
     }
 
@@ -725,9 +777,13 @@
         });
     }
 
-    // Inicializar el carrito al cargar la página
+    // Inicializar el carrito y cerrar todas las categorías al cargar la página
     document.addEventListener('DOMContentLoaded', () => {
         actualizarCarrito();
+        const categorias = document.querySelectorAll('.categoria');
+        categorias.forEach(cat => {
+            cat.classList.remove('open');
+        });
     });
   </script>
 </body>
